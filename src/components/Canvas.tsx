@@ -75,13 +75,27 @@ export default function CanvasComponent() {
     };
   }, [isDrawing]);
 
+  const saveCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      console.error("Canvas not detected.");
+      return;
+    }
+
+    const dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = "canvas.png"; // TODO: Provide a proper name for the file later
+    link.click();
+  };
+
   const clearCanvas = () => {
     if (!isDrawing && canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
       if (!ctx) {
-        console.log("Failed to get canvas context");
+        console.error("Failed to get canvas context");
         return;
-      };
+      }
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
   };
