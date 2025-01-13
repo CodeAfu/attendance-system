@@ -34,49 +34,48 @@ export default function CanvasComponent({ name }: CanvasComponentProps) {
     contextRef.current = context;
   }, []);
 
-  const getPosition = (event: MouseEvent | TouchEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return null;
-
-    const rect = canvas.getBoundingClientRect();
-    if (event instanceof TouchEvent) {
-      const touch = event.touches[0];
-      return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
-    } else if (event instanceof MouseEvent) {
-      return { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    }
-    return null;
-  };
-
-  const startDrawing = (event: MouseEvent | TouchEvent) => {
-    const pos = getPosition(event);
-    if (!pos || !contextRef.current) return;
-
-    setIsDrawing(true);
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(pos.x, pos.y);
-  };
-
-  const draw = (event: MouseEvent | TouchEvent) => {
-    if (!isDrawing || !contextRef.current) return;
-
-    const pos = getPosition(event);
-    if (!pos) return;
-
-    contextRef.current.lineTo(pos.x, pos.y);
-    contextRef.current.stroke();
-  };
-
-  const stopDrawing = () => {
-    if (isDrawing && contextRef.current) {
-      setIsDrawing(false);
-      contextRef.current.closePath();
-    }
-  };
-
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    const getPosition = (event: MouseEvent | TouchEvent) => {
+      if (!canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      
+      if (event instanceof TouchEvent) {
+        const touch = event.touches[0];
+        return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+      } else if (event instanceof MouseEvent) {
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      }
+      return null;
+    };
+
+    const startDrawing = (event: MouseEvent | TouchEvent) => {
+      const pos = getPosition(event);
+      if (!pos || !contextRef.current) return;
+
+      setIsDrawing(true);
+      contextRef.current.beginPath();
+      contextRef.current.moveTo(pos.x, pos.y);
+    };
+
+    const draw = (event: MouseEvent | TouchEvent) => {
+      if (!isDrawing || !contextRef.current) return;
+
+      const pos = getPosition(event);
+      if (!pos) return;
+
+      contextRef.current.lineTo(pos.x, pos.y);
+      contextRef.current.stroke();
+    };
+
+    const stopDrawing = () => {
+      if (isDrawing && contextRef.current) {
+        setIsDrawing(false);
+        contextRef.current.closePath();
+      }
+    };
 
     canvas.addEventListener("mousedown", startDrawing);
     canvas.addEventListener("mousemove", draw);
@@ -95,7 +94,7 @@ export default function CanvasComponent({ name }: CanvasComponentProps) {
       canvas.removeEventListener("touchmove", draw);
       canvas.removeEventListener("touchend", stopDrawing);
     };
-  }, [draw, startDrawing, stopDrawing]);
+  }, [isDrawing]); // Now we only depend on isDrawing state
 
   const clearCanvas = () => {
     if (!isDrawing && canvasRef.current && contextRef.current) {
@@ -127,14 +126,14 @@ export default function CanvasComponent({ name }: CanvasComponentProps) {
         ref={canvasRef}
         className="w-full h-40 border border-gray-300 rounded-md mb-2"
       />
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-end gap-2">
         <button
           type="button"
           onClick={clearCanvas}
           className="bg-white border border-blue-300 rounded-md px-2 py-1 hover:bg-gray-100 text-blue-500 font-semibold focus:outline-none focus:bg-blue-500 focus:text-white"
         >
           Clear
-        </button>{" "}
+        </button>
         <button
           type="button"
           onClick={saveCanvas}
