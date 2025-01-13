@@ -1,11 +1,19 @@
+"use client";
 import Link from "next/link";
 import SignatureComponent from "./Signature";
+import { useState } from "react";
 
 interface AttendanceFormProps {
   title?: string;
 }
 
 export default function AttendanceForm({ title }: AttendanceFormProps) {
+  const [name, setName] = useState("");
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
   const renderTitle = () => {
     if (!title) {
       return null;
@@ -22,7 +30,8 @@ export default function AttendanceForm({ title }: AttendanceFormProps) {
     label: string,
     type: "text" | "date",
     placeholder?: string,
-    divArgs?: string
+    divArgs?: string,
+    onChangeHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void
   ) => {
     if (!id || !label || !type) {
       return null;
@@ -37,6 +46,7 @@ export default function AttendanceForm({ title }: AttendanceFormProps) {
           id={id}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder={placeholder ?? ""}
+          onChange={onChangeHandler}
         />
       </div>
     );
@@ -46,10 +56,23 @@ export default function AttendanceForm({ title }: AttendanceFormProps) {
     <>
       {renderTitle()}
       <form className="flex flex-col gap-4 p-6 bg-white shadow-md rounded-lg max-w-md mx-auto">
-        {renderField("name", "Name", "text", "Enter your name")}
+        {renderField(
+          "name",
+          "Name",
+          "text",
+          "Enter your name",
+          undefined,
+          handleNameChange
+        )}
         {renderField("venue", "Venue", "text", "Enter the venue")}
-        {renderField("signInDate", "Sign-in Date", "date", "")}
-        <SignatureComponent />
+        {renderField(
+          "courseName",
+          "Course Name",
+          "text",
+          "Enter the course name"
+        )}
+        {renderField("signInDate", "Sign-in Date", "date", "")} {/* TODO: Automate this data */}
+        <SignatureComponent name={name} />
         <Link
           href="/submit"
           type="submit"
