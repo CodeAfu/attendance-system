@@ -5,7 +5,9 @@ interface CanvasComponentProps {
   name: string;
 }
 
-export default function CanvasComponent({ name }: CanvasComponentProps) {
+export default function SignatureCanvasComponent({
+  name,
+}: CanvasComponentProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
