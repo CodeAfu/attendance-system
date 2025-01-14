@@ -10,6 +10,7 @@ interface AttendanceFormProps {
 export default function AttendanceForm({ title }: AttendanceFormProps) {
   const [name, setName] = useState("");
 
+  // TODO: Only save when button is clicked.
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
@@ -53,9 +54,9 @@ export default function AttendanceForm({ title }: AttendanceFormProps) {
   };
 
   return (
-    <>
+    <div className="md:mt-12">
       {renderTitle()}
-      <form className="flex flex-col gap-4 p-6 bg-white shadow-md rounded-lg max-w-md mx-auto">
+      <form className="flex flex-col gap-4 p-6 bg-white shadow-md rounded-lg md:max-w-xl max-w-md mx-auto">
         {renderField(
           "name",
           "Name",
@@ -64,14 +65,16 @@ export default function AttendanceForm({ title }: AttendanceFormProps) {
           undefined,
           handleNameChange
         )}
-        {renderField("venue", "Venue", "text", "Enter the venue")}
+        {/* TODO: Automate gatherin data from the following 3 fields */}
+        {renderField("venue", "Venue", "text", "Enter the venue (temp)")}
         {renderField(
           "courseName",
           "Course Name",
           "text",
-          "Enter the course name"
+          "Enter the course name (temp)"
         )}
-        {renderField("signInDate", "Sign-in Date", "date", "")} {/* TODO: Automate this data */}
+        {renderField("signInDate", "Sign-in Date", "date", "")}
+
         <SignatureComponent name={name} />
         <Link
           href="/submit"
@@ -81,6 +84,6 @@ export default function AttendanceForm({ title }: AttendanceFormProps) {
           Submit
         </Link>
       </form>
-    </>
+    </div>
   );
 }

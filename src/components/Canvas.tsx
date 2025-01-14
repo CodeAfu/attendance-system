@@ -17,21 +17,35 @@ export default function CanvasComponent({ name }: CanvasComponentProps) {
       return;
     }
 
-    const scale = window.devicePixelRatio || 1;
-    canvas.width = canvas.offsetWidth * scale;
-    canvas.height = canvas.offsetHeight * scale;
+    const setCanvasDimensions = () => {
+      const scale = window.devicePixelRatio || 1;
+      canvas.width = canvas.offsetWidth * scale;
+      canvas.height = canvas.offsetHeight * scale;
 
-    const context = canvas.getContext("2d");
-    if (!context) {
-      console.error("Context not detected.");
-      return;
-    }
+      const context = canvas.getContext("2d");
+      if (!context) {
+        console.error("Context not detected.");
+        return;
+      }
 
-    context.scale(scale, scale);
-    context.strokeStyle = "black";
-    context.lineWidth = 2;
-    context.lineCap = "round";
-    contextRef.current = context;
+      context.scale(scale, scale);
+      context.strokeStyle = "black";
+      context.lineWidth = 2;
+      context.lineCap = "round";
+      contextRef.current = context;
+    };
+
+    setCanvasDimensions();
+
+    const handleResize = () => {
+      setCanvasDimensions();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -41,7 +55,7 @@ export default function CanvasComponent({ name }: CanvasComponentProps) {
     const getPosition = (event: MouseEvent | TouchEvent) => {
       if (!canvas) return null;
       const rect = canvas.getBoundingClientRect();
-      
+
       if (event instanceof TouchEvent) {
         const touch = event.touches[0];
         return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
@@ -94,7 +108,7 @@ export default function CanvasComponent({ name }: CanvasComponentProps) {
       canvas.removeEventListener("touchmove", draw);
       canvas.removeEventListener("touchend", stopDrawing);
     };
-  }, [isDrawing]); // Now we only depend on isDrawing state
+  }, [isDrawing]);
 
   const clearCanvas = () => {
     if (!isDrawing && canvasRef.current && contextRef.current) {
@@ -130,14 +144,14 @@ export default function CanvasComponent({ name }: CanvasComponentProps) {
         <button
           type="button"
           onClick={clearCanvas}
-          className="bg-white border border-blue-300 rounded-md px-2 py-1 hover:bg-gray-100 text-blue-500 font-semibold focus:outline-none focus:bg-blue-500 focus:text-white"
+          className="bg-white border border-blue-300 rounded-md px-2 py-1 hover:bg-gray-100 text-blue-500 font-semibold focus:outline-none active:bg-blue-500 active:text-white"
         >
           Clear
         </button>
         <button
           type="button"
           onClick={saveCanvas}
-          className="bg-white border border-blue-300 rounded-md px-2 py-1 hover:bg-gray-100 text-blue-500 font-semibold focus:outline-none focus:bg-blue-500 focus:text-white"
+          className="bg-white border border-blue-300 rounded-md px-2 py-1 hover:bg-gray-100 text-blue-500 font-semibold focus:outline-none active:bg-blue-500 active:text-white"
         >
           Save
         </button>
