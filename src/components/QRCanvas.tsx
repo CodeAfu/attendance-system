@@ -1,56 +1,70 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { useQRCode } from "next-qrcode";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Loading from "@/components/Loading";
+import QrEnvVariable from "@/actions/qr-backend";
 
-export default function QRCanvasComponent() {
-  const { Canvas } = useQRCode();
+interface QRCanvasComponentProps {
+  venueProp: string;
+}
+
+export default function QRCanvasComponent({
+  venueProp,
+}: QRCanvasComponentProps) {
+  const [backendUrl, setBackendUrl] = useState<string | undefined>(undefined);
+  const [qrCode, setQrCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const intervalRef = useRef<NodeJS.Timeout>(null);
+  const [venue, setVenue] = useState<string | null>(venueProp);
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      const canvas = document.querySelector('canvas');
-      if (!canvas) return;
+    QrEnvVariable().then((result) => {
+      setBackendUrl(result.url);
+    });
+  }, []);
 
-      const context = canvas.getContext("2d");
-      if (!context) return;
+  useEffect(() => {
+    if (!backendUrl) return;
+    const fetchQRCode = async (venueId: string) => {
+      try {
+        const response = await fetch(`${backendUrl}/api/qr/generate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ venueId }),
+        });
 
-      const { width, height } = canvas;
-      const imageData = context.getImageData(0, 0, width, height).data;
-      
-      const hasContent = Array.from(imageData).some((pixel, index) => 
-        index % 4 === 3 && pixel !== 0
-      );
-
-      if (hasContent) {
+        const data = await response.json();
+        setQrCode(data.QRCode);
+        setVenue(data.venue);
+      } catch (error) {
+        console.error(
+          `${backendUrl + "/api/qr/generate"} Failed to fetch QR code:`,
+          error
+        );
+      } finally {
         setIsLoading(false);
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-        }
-      }
-    }, 50);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
       }
     };
-  }, []);
+
+    fetchQRCode(venueProp);
+  }, [venueProp, backendUrl]);
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-3">Venue: </h1>
-      {isLoading && <Loading />}
-      <Canvas
-        text={"https://github.com/bunlong/next-qrcode"}
-        options={{
-          errorCorrectionLevel: "M",
-          margin: 3,
-          scale: 4,
-          width: 400,
-        }}
-      />
+      {isLoading ? (
+        <Loading variant="spinner" size="lg" />
+      ) : (
+        qrCode && (
+          <Image
+            src={qrCode}
+            alt={`QR Code for ${venue}`}
+            className="max-w-full h-auto"
+            width="600"
+            height="600"
+          />
+        )
+      )}
     </>
   );
 }

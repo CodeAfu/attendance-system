@@ -1,12 +1,18 @@
-import QRCanvasComponent from "@/components/QRCanvas";
 import React from "react";
+import QRSection from "@/sections/QRSection";
 
-export default function QRPage() {
+export default async function QRPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  // TODO: Add validation for venue via backend calls
+  const venue = (await params).slug;
 
   return (
-    <div className="container">
-      <div className="flex flex-col justify-center items-center min-h-screen">
-        <QRCanvasComponent />
+    <div className="min-h-screen flex flex-col">
+      <div className="container flex-1 flex flex-col">
+        <QRSection venue={venue} />
       </div>
     </div>
   );
