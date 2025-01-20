@@ -12,7 +12,7 @@ export default async function QRPage({
   return (
     <div className="min-h-screen flex flex-col">
       <div className="container flex-1 flex flex-col">
-        <QRSection course={course} />
+        <QRSection />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useState, useContext } from "react";
 
 interface QRContextType {
   venue: string;
@@ -12,19 +12,21 @@ interface QRContextType {
 const QRDataContext = createContext<QRContextType | null>(null);
 
 export function QRDataProvider({ children }: { children: ReactNode }) {
-  const [qrCode, setQRCode] = useState("");
-  const [venue, setVenue] = useState("");
-  const [course, setCourse] = useState("");
-  
+  const [qrCode, setQRCode] = useState<string>("");
+  const [venue, setVenue] = useState<string>("");
+  const [course, setCourse] = useState<string>("");
+
   return (
-    <QRDataContext.Provider value={{ venue, course, qrCode: qrCode, setVenue, setCourse, setQRCode }}>
+    <QRDataContext.Provider
+      value={{ venue, course, qrCode, setVenue, setCourse, setQRCode }}
+    >
       {children}
     </QRDataContext.Provider>
   );
 }
 
 export function useQRData() {
-  const context = React.useContext(QRDataContext);
+  const context = useContext(QRDataContext);
   if (!context) {
     throw new Error("useQRData must be used within a QRDataProvider");
   }

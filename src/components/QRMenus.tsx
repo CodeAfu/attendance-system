@@ -18,7 +18,7 @@ const data: Data[] = [
 
 export default function QRMenus() {
   const { setVenue, setCourse } = useQRData();
-  const [backendUrl, setBackendUrl] = useState<string | undefined>(undefined);
+  const [, setBackendUrl] = useState<string | undefined>(undefined);
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function QRMenus() {
   const getForm = async () => {
     try {
       setIsFetching(true);
-      const url = await fetch(`${backendUrl}/api/qr/scan`);
+      // const url = await fetch(`${backendUrl}/api/qr/scan`);
     } catch (err) {
       console.error(err);
     } finally {

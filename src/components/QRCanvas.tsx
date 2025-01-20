@@ -3,26 +3,19 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "@/components/Loading";
 import QrEnvVariable from "@/actions/qr-backend";
+import { Response } from "@/utils/types";
+import { useQRData } from "@/context/QRDataContext";
 
-interface Response {
-  success: boolean;
-  data: {
-    QRCode: string;
-    course: string;
-  };
+interface UserResponseData {
+  QRCode: string;
+  course: string;
 }
 
-interface QRCanvasComponentProps {
-  courseProp: string;
-}
-
-export default function QRCanvasComponent({
-  courseProp,
-}: QRCanvasComponentProps) {
+export default function QRCanvasComponent() {
   const [backendUrl, setBackendUrl] = useState<string | undefined>(undefined);
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [course, setCourse] = useState<string | null>(courseProp);
+  const { course, setCourse } = useQRData();
 
   useEffect(() => {
     QrEnvVariable().then((result) => {
@@ -50,7 +43,7 @@ export default function QRCanvasComponent({
           );
         }
 
-        const output: Response = await response.json();
+        const output: Response<UserResponseData> = await response.json();
 
         if (output.success && output.data) {
           setQrCode(output.data.QRCode);
@@ -66,29 +59,31 @@ export default function QRCanvasComponent({
           error
         );
         setQrCode(null);
-        setCourse(null);
+        setCourse("");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchQRCode(courseProp);
-  }, [courseProp, backendUrl]);
+    fetchQRCode(course);
+  }, [course, setCourse, backendUrl]);
 
   return (
     <>
       {isLoading ? (
         <Loading variant="spinner" size="lg" />
+      ) : qrCode ? (
+        <Image
+          src={qrCode}
+          alt={`QR Code for ${course}`}
+          width="600"
+          className="max-w-full h-auto"
+          height="600"
+        />
       ) : (
-        qrCode && (
-          <Image
-            src={qrCode}
-            alt={`QR Code for ${course}`}
-            className="max-w-full h-auto"
-            width="600"
-            height="600"
-          />
-        )
+        <div className="text-red-600 text-center mt-4">
+          <p>Error: Unable to generate QR Code. Please try again later.</p>
+        </div>
       )}
     </>
   );
