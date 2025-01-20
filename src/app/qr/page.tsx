@@ -7,12 +7,12 @@ export default async function QRPage({
   params: Promise<{ slug: string }>;
 }) {
   // TODO: Add validation for venue via backend calls
-  const venue = (await params).slug;
+  const course = (await params).slug;
 
   return (
     <div className="min-h-screen flex flex-col">
       <div className="container flex-1 flex flex-col">
-        <QRSection venue={venue} />
+        <QRSection course={course} />
       </div>
     </div>
   );
