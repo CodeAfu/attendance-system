@@ -16,7 +16,7 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function QRCanvasComponent() {
   const [backendUrl, setBackendUrl] = useState<string | undefined>(undefined);
   const [qrCode, setQrCode] = useState<string | null>(null);
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState<Status>("idle");
   const { course, generateTrigger, setCourse, setGenerateTrigger } =
     useQRData();
 
