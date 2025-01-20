@@ -1,10 +1,16 @@
 "use client";
+import React, { useState } from "react";
 import QRCanvasComponent from "@/components/QRCanvas";
 import QRMenus from "@/components/QRMenus";
 import { QRDataProvider } from "@/context/QRDataContext";
-import React from "react";
 
 export default function QRSection() {
+  const [generateTrigger, setGenerateTrigger] = useState(false);
+
+  const handleGenerate = () => {
+    setGenerateTrigger(true);
+  };
+
   return (
     <QRDataProvider>
       <div className="w-full flex flex-col flex-1">

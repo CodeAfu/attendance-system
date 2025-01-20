@@ -1,39 +1,30 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Dropdown from "@/components/Dropdown";
 import { useQRData } from "@/context/QRDataContext";
-import QrEnvVariable from "@/actions/qr-backend";
 
 interface Data {
   id: number;
-  venue: string;
   course: string;
+  venue: string;
 }
 
 const data: Data[] = [
-  { id: 1, venue: "A-05-04", course: "CourseID_1" },
-  { id: 2, venue: "A-04-04", course: "CourseID_2" },
-  { id: 3, venue: "A-06-04", course: "CourseID_3" },
+  { id: 1, course: "CourseID_1", venue: "A-05-04" },
+  { id: 2, course: "CourseID_2", venue: "A-04-04" },
+  { id: 3, course: "CourseID_3", venue: "A-06-04" },
 ];
 
 export default function QRMenus() {
-  const { setVenue, setCourse } = useQRData();
-  const [, setBackendUrl] = useState<string | undefined>(undefined);
+  const { setVenue, setCourse, setGenerateTrigger } = useQRData();
   const [isFetching, setIsFetching] = useState(false);
+  // const [, setBackendUrl] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
-    QrEnvVariable().then((result) => {
-      setBackendUrl(result.url);
-    });
-  }, []);
-
-  // const handleVenueChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setVenue(e.target.value);
-  // };
-
-  // const handleCourseChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setCourse(e.target.value);
-  // };
+  // useEffect(() => {
+  //   QrEnvVariable().then((result) => {
+  //     setBackendUrl(result.url);
+  //   });
+  // }, []);
 
   const renderField = <T,>(
     label: string,
@@ -54,16 +45,22 @@ export default function QRMenus() {
     );
   };
 
-  const getForm = async () => {
-    try {
-      setIsFetching(true);
-      // const url = await fetch(`${backendUrl}/api/qr/scan`);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsFetching(false);
-    }
+  const handleGenerateQRCode = async () => {
+    setIsFetching(true);
+    setGenerateTrigger(true);
+    setIsFetching(false);
   };
+
+  // const getForm = async () => {
+  //   try {
+  //     setIsFetching(true);
+  //     // const url = await fetch(`${backendUrl}/api/qr/scan`);
+  //   } catch (err) {
+  //     console.error(err);
+  //   } finally {
+  //     setIsFetching(false);
+  //   }
+  // };
 
   return (
     <div>
@@ -87,7 +84,7 @@ export default function QRMenus() {
               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
               : "bg-blue-500 hover:bg-blue-600 text-white"
           }`}
-        onClick={getForm}
+        onClick={handleGenerateQRCode}
         disabled={isFetching}
       >
         Generate QR Code

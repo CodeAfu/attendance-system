@@ -12,6 +12,13 @@
 - User fills out form and submits
 - **API is called to create attendance record**
 
+## Data
+- Name
+- Employer
+- NRIC
+- Citizenship
+- Gender
+
 ## API Endpoints
 ```bash
 ### READ
@@ -21,7 +28,7 @@
 /api/qr/generate # POST - Generate QR Code for course ID
 
 ### SCAN
-/api/qr/scan # POST - Scan QR Code
+/api/qr/scane # POST - Scan QR Code
 ```
 
 ## Deploy on Vercel

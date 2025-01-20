@@ -4,9 +4,11 @@ interface QRContextType {
   venue: string;
   course: string;
   qrCode: string;
+  generateTrigger: boolean;
   setVenue: (value: string) => void;
   setCourse: (value: string) => void;
   setQRCode: (value: string) => void;
+  setGenerateTrigger: (value: boolean) => void;
 }
 
 const QRDataContext = createContext<QRContextType | null>(null);
@@ -15,10 +17,20 @@ export function QRDataProvider({ children }: { children: ReactNode }) {
   const [qrCode, setQRCode] = useState<string>("");
   const [venue, setVenue] = useState<string>("");
   const [course, setCourse] = useState<string>("");
+  const [generateTrigger, setGenerateTrigger] = useState<boolean>(false);
 
   return (
     <QRDataContext.Provider
-      value={{ venue, course, qrCode, setVenue, setCourse, setQRCode }}
+      value={{
+        venue,
+        course,
+        qrCode,
+        generateTrigger,
+        setVenue,
+        setCourse,
+        setQRCode,
+        setGenerateTrigger,
+      }}
     >
       {children}
     </QRDataContext.Provider>
