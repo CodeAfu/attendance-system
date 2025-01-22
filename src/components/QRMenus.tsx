@@ -82,7 +82,7 @@ export default function QRMenus() {
           ${
             isFetching
               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600 text-white"
+              : "bg-purple-500 hover:bg-purple-600 text-white"
           }`}
         onClick={handleGenerateQRCode}
         disabled={isFetching}

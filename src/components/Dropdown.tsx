@@ -39,7 +39,7 @@ export default function Dropdown<T>({
             <ListboxOption
               key={index}
               value={item}
-              className="group flex gap-2 px-4 py-2 cursor-pointer bg-white data-[focus]:bg-blue-100"
+              className="group flex gap-2 px-4 py-2 cursor-pointer bg-white data-[focus]:bg-purple-100"
             >
               {labelProperty(item)}
             </ListboxOption>

@@ -8,7 +8,7 @@ export default function QRSection() {
   return (
     <QRDataProvider>
       <div className="w-full flex flex-col flex-1">
-        <div className="border p-3">
+        <div className="border bg-white shadow-sm p-3">
           <QRMenus />
         </div>
         <div className="flex-1 flex items-center justify-center">

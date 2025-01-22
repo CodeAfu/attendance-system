@@ -12,3 +12,8 @@ export type Response<T = unknown> = {
   success: boolean;
   data: T;
 }
+
+export enum FetchType {
+  text,
+  date,
+}

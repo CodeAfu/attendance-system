@@ -146,14 +146,14 @@ export default function SignatureCanvasComponent({
         <button
           type="button"
           onClick={clearCanvas}
-          className="bg-white border border-blue-300 rounded-md px-2 py-1 hover:bg-gray-100 text-blue-500 font-semibold focus:outline-none active:bg-blue-500 active:text-white"
+          className="bg-white border border-purple-300 rounded-md px-2 py-1 hover:bg-gray-100 text-purple-500 font-semibold focus:outline-none active:bg-purple-500 active:text-white"
         >
           Clear
         </button>
         <button
           type="button"
           onClick={saveCanvas}
-          className="bg-white border border-blue-300 rounded-md px-2 py-1 hover:bg-gray-100 text-blue-500 font-semibold focus:outline-none active:bg-blue-500 active:text-white"
+          className="bg-white border border-purple-300 rounded-md px-2 py-1 hover:bg-gray-100 text-purple-500 font-semibold focus:outline-none active:bg-purple-500 active:text-white"
         >
           Save
         </button>

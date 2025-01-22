@@ -9,7 +9,7 @@ interface LoadingProps {
 export default function Loading({ 
   variant = 'spinner',
   size = 'md',
-  color = 'blue'
+    color = 'purple'
 }: LoadingProps) {
   const sizeClasses = {
     sm: 'h-8 w-8',
