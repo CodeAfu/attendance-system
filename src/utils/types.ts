@@ -8,7 +8,7 @@ export type Error = {
   message: string;
 }
 
-export type Response<T = unknown> = {
+export type APIResponse<T = unknown> = {
   success: boolean;
   data: T;
 }

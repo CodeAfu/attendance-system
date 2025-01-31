@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "@/components/Loading";
 import QrEnvVariable from "@/actions/qr-backend";
-import { Response } from "@/utils/types";
+import { APIResponse } from "@/utils/types";
 import { useQRData } from "@/context/QRDataContext";
 
 interface UserResponseData {
   QRCode: string;
   course: string;
+  venue: string;
 }
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -16,9 +17,16 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function QRCanvasComponent() {
   const [backendUrl, setBackendUrl] = useState<string | undefined>(undefined);
   const [qrCode, setQrCode] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [status, setStatus] = useState<Status>("idle");
-  const { course, generateTrigger, setCourse, setGenerateTrigger } =
-    useQRData();
+  const {
+    course,
+    venue,
+    generateTrigger,
+    setCourse,
+    setVenue,
+    setGenerateTrigger,
+  } = useQRData();
 
   useEffect(() => {
     QrEnvVariable().then((result) => {
@@ -37,20 +45,25 @@ export default function QRCanvasComponent() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ course: courseId }),
+          body: JSON.stringify({ course: courseId, venue }),
         });
 
         if (!response.ok) {
+          if (response.status === 400) {
+            const output = await response.json();
+            setErrorMessage(output.message);
+          }
           throw new Error(
             `Failed to fetch QR code: HTTP ${response.status} - ${response.statusText}`
           );
         }
 
-        const output: Response<UserResponseData> = await response.json();
+        const output: APIResponse<UserResponseData> = await response.json();
 
         if (output.success && output.data) {
           setQrCode(output.data.QRCode);
           setCourse(output.data.course);
+          setVenue(output.data.venue);
           setStatus("success");
         } else {
           throw new Error(
@@ -71,7 +84,15 @@ export default function QRCanvasComponent() {
     };
 
     fetchQRCode(course);
-  }, [generateTrigger, course, backendUrl, setCourse, setGenerateTrigger]);
+  }, [
+    generateTrigger,
+    course,
+    venue,
+    backendUrl,
+    setCourse,
+    setVenue,
+    setGenerateTrigger,
+  ]);
 
   return (
     <>
@@ -86,13 +107,18 @@ export default function QRCanvasComponent() {
         />
       )}
       {status === "error" && (
-        <div className="text-red-600 text-center mt-4 tracking-tighter">
+        <div className="text-red-600 text-center mt-4 tracking-tight">
           <span className="font-semibold">Error: </span>
-          <span>Unable to generate QR Code. Please try again later.</span>
+          {errorMessage ? (
+            <span>{errorMessage}</span>
+          ) : (
+            <span>Unknown error occurred.</span>
+          )}
+          <br />
         </div>
       )}
       {status === "idle" && !generateTrigger && (
-        <div className="text-gray-600 text-center mt-4 tracking-tighter">
+        <div className="text-gray-600 text-center mt-4 tracking-tight">
           <span className="font-semibold">Waiting to generate QR Code.</span>
         </div>
       )}

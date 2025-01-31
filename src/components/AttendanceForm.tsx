@@ -30,9 +30,9 @@ export default function AttendanceForm({ title, data }: AttendanceFormProps) {
       return null;
     }
     return (
-      <div className="flex justify-start items-center md:max-w-xl max-w-md mx-auto px-2">
-        <div className="break-all mb-4">
-          <span className="text-2xl font-bold">{title}</span>
+      <div className="flex justify-start bg-purple-700 shadow-md text-white items-center md:max-w-xl max-w-md mx-auto px-5 py-4 rounded-t-lg">
+        <div className="break-all">
+          <span className="text-3xl font-semibold">{title}</span>
         </div>
       </div>
     );
@@ -41,7 +41,11 @@ export default function AttendanceForm({ title, data }: AttendanceFormProps) {
   return (
     <div className="md:mt-12">
       {renderTitle()}
-      <form className="flex flex-col gap-4 p-6 bg-white shadow-md rounded-lg md:max-w-xl max-w-md mx-auto">
+      <form
+        className={`flex flex-col gap-2 p-6 bg-white shadow-md rounded-b-lg md:max-w-xl max-w-md mx-auto ${
+          !title ? "rounded-t-lg" : ""
+        }`}
+      >
         {hasCourse && (
           <p className="font-semibold">
             Course:&nbsp;
