@@ -1,11 +1,7 @@
 import React from "react";
 import QRSection from "@/sections/QRSection";
 
-export default async function QRPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function QRPage() {
   // TODO: Add validation for venue via backend calls
   // const course = (await params).slug;
 

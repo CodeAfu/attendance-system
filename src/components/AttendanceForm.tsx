@@ -3,7 +3,7 @@ import Link from "next/link";
 import SignatureComponent from "./Signature";
 import { useState, ChangeEvent } from "react";
 import FormField from "./FormField";
-import { getDateTime } from "@/utils/functions";
+// import { getDateTime } from "@/utils/functions";
 
 interface AttendanceFormProps {
   title?: string;
@@ -15,7 +15,7 @@ interface AttendanceFormProps {
 
 export default function AttendanceForm({ title, data }: AttendanceFormProps) {
   const [name, setName] = useState("");
-  const time = getDateTime();
+  // const time = getDateTime();
 
   const hasCourse = data && data.course;
   const hasVenue = data && data.venue;
