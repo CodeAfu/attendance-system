@@ -7,13 +7,17 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { data } = await request.json();
+  const { course, venue } = await request.json();
+  
   const requiredFields = ["course", "venue"];
-
-  const missingFields = requiredFields.filter(x => !data?.[x]);
+  const fields = { course, venue };
+  const missingFields = requiredFields.filter(field => !fields[field as keyof typeof fields]);
+  
   if (missingFields.length > 0) {
-    const response = { success: false, message: `Missing required fields: ${missingFields.join(", ")}` };
-    return NextResponse.json(response, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: `Missing required fields: ${missingFields.join(", ")}` },
+      { status: 400 }
+    );
   }
 
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
@@ -21,8 +25,10 @@ export async function POST(request: Request) {
   const formPath = "/attendance/form"
 
   const formUrl = new URL(formPath, `${protocol}://${host}`);
-  formUrl.searchParams.set("course", data.course);
-  formUrl.searchParams.set("venue", data.venue);
+  formUrl.searchParams.set("course", course);
+  formUrl.searchParams.set("venue", venue);
+
+  // const url = formUrl.toString().toLowerCase();
 
   try {
     const qrCode = await QRCode.toDataURL(formUrl.toString(), {
@@ -31,11 +37,19 @@ export async function POST(request: Request) {
       margin: 2,
     });
     
-    const response: APIResponse = { success: true, data: qrCode }; 
-    return NextResponse.json({ response });
+    const response: APIResponse = { 
+      success: true, 
+      data: {
+        QRCode: qrCode,
+        course: course,
+        venue: venue,
+      }
+    }; 
+
+    return NextResponse.json(response);
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: `Failed to generate QR code: ${error}` },
+      { success: false, message: error },
       { status: 500 }
     );
   }

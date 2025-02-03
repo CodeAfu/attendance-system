@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "@/components/Loading";
-import QrEnvVariable from "@/actions/qr-backend";
 import { APIResponse } from "@/utils/types";
 import { useQRData } from "@/context/QRDataContext";
 
@@ -15,7 +14,6 @@ interface UserResponseData {
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function QRCanvasComponent() {
-  const [backendUrl, setBackendUrl] = useState<string | undefined>(undefined);
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [status, setStatus] = useState<Status>("idle");
@@ -29,18 +27,12 @@ export default function QRCanvasComponent() {
   } = useQRData();
 
   useEffect(() => {
-    QrEnvVariable().then((result) => {
-      setBackendUrl(result.url);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!generateTrigger || !backendUrl) return;
+    if (!generateTrigger) return;
 
     const fetchQRCode = async (courseId: string) => {
       setStatus("loading");
       try {
-        const response = await fetch(`${backendUrl}/api/qr/generate`, {
+        const response = await fetch("/api/qr/generate", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -58,7 +50,7 @@ export default function QRCanvasComponent() {
           );
         }
 
-        const output: APIResponse<UserResponseData> = await response.json();
+        const output = (await response.json()) as APIResponse<UserResponseData>;
 
         if (output.success && output.data) {
           setQrCode(output.data.QRCode);
@@ -71,10 +63,7 @@ export default function QRCanvasComponent() {
           );
         }
       } catch (error) {
-        console.error(
-          `${backendUrl + "/api/qr/generate"} Failed to fetch QR code:`,
-          error
-        );
+        console.error(error);
         setQrCode(null);
         setCourse("");
         setStatus("error");
@@ -84,15 +73,7 @@ export default function QRCanvasComponent() {
     };
 
     fetchQRCode(course);
-  }, [
-    generateTrigger,
-    course,
-    venue,
-    backendUrl,
-    setCourse,
-    setVenue,
-    setGenerateTrigger,
-  ]);
+  }, [generateTrigger, course, venue, setCourse, setVenue, setGenerateTrigger]);
 
   return (
     <>
