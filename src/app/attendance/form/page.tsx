@@ -1,4 +1,5 @@
 import AttendanceForm from "@/components/AttendanceForm";
+// import { type PageProps } from "next/app";
 import React from "react";
 
 type Data = {
@@ -9,12 +10,11 @@ type Data = {
 export default async function FormPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const params = await searchParams;
-
-  const course = params["course"] as string;
-  const venue = params["venue"] as string;
+  const resolvedSearchParams = await searchParams;
+  const course = resolvedSearchParams.course as string;
+  const venue = resolvedSearchParams.venue as string;
 
   // TODO: Validate the existence of the course and return not-found page if false
 
