@@ -9,22 +9,15 @@ interface UserResponseData {
   QRCode: string;
   course: string;
   venue: string;
+  url: string;
 }
 
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function QRCanvasComponent() {
-  const [qrCode, setQrCode] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [status, setStatus] = useState<Status>("idle");
-  const {
-    course,
-    venue,
-    generateTrigger,
-    setCourse,
-    setVenue,
-    setGenerateTrigger,
-  } = useQRData();
+  const { data, generateTrigger, setData, setGenerateTrigger } = useQRData();
 
   useEffect(() => {
     if (!generateTrigger) return;
@@ -37,7 +30,11 @@ export default function QRCanvasComponent() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ course: courseId, venue }),
+          body: JSON.stringify({
+            course: courseId,
+            venue: data.venue,
+            url: data.url,
+          }),
         });
 
         if (!response.ok) {
@@ -53,9 +50,13 @@ export default function QRCanvasComponent() {
         const output = (await response.json()) as APIResponse<UserResponseData>;
 
         if (output.success && output.data) {
-          setQrCode(output.data.QRCode);
-          setCourse(output.data.course);
-          setVenue(output.data.venue);
+          setData(() => ({
+            course: output.data.course,
+            venue: output.data.venue,
+            qrCode: output.data.QRCode,
+            url: output.data.url,
+          }));
+          console.log(data);
           setStatus("success");
         } else {
           throw new Error(
@@ -64,24 +65,28 @@ export default function QRCanvasComponent() {
         }
       } catch (error) {
         console.error(error);
-        setQrCode(null);
-        setCourse("");
+        setData({
+          course: "",
+          venue: "",
+          qrCode: null,
+          url: "#",
+        });
         setStatus("error");
       } finally {
         setGenerateTrigger(false);
       }
     };
 
-    fetchQRCode(course);
-  }, [generateTrigger, course, venue, setCourse, setVenue, setGenerateTrigger]);
+    fetchQRCode(data.course);
+  }, [data, generateTrigger, setData, setGenerateTrigger]);
 
   return (
     <>
       {status === "loading" && <Loading variant="spinner" size="lg" />}
-      {status === "success" && qrCode && (
+      {status === "success" && data.qrCode && (
         <Image
-          src={qrCode}
-          alt={`QR Code for ${course}`}
+          src={data.qrCode}
+          alt={`QR Code for ${data.course}`}
           width="600"
           className="max-w-full h-auto"
           height="600"

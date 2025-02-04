@@ -41,10 +41,11 @@ export async function POST(request: Request) {
       success: true, 
       data: {
         QRCode: qrCode,
+        url: formUrl.toString(),
         course: course,
         venue: venue,
       }
-    }; 
+    };
 
     return NextResponse.json(response);
   } catch (error) {
@@ -53,6 +54,5 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-
 }
 

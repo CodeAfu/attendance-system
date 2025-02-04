@@ -13,7 +13,15 @@ export type APIResponse<T = unknown> = {
   data: T;
 }
 
+export type QRData = {
+  venue: string;
+  course: string;
+  qrCode: string | null;
+  url: string | "#";
+}
+
 export enum FetchType {
   text,
   date,
 }
+

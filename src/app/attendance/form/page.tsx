@@ -1,5 +1,5 @@
+import NotFound from "@/app/not-found";
 import AttendanceForm from "@/components/AttendanceForm";
-// import { type PageProps } from "next/app";
 import React from "react";
 
 type Data = {
@@ -16,7 +16,9 @@ export default async function FormPage({
   const course = resolvedSearchParams.course as string;
   const venue = resolvedSearchParams.venue as string;
 
-  // TODO: Validate the existence of the course and return not-found page if false
+  if (!course || !venue) {
+    return <NotFound message="Please provide a course and venue value" />;
+  }
 
   const data: Data = {
     course,

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Dropdown from "@/components/Dropdown";
 import { useQRData } from "@/context/QRDataContext";
+import Link from "next/link";
 
 interface Data {
   id: number;
@@ -9,14 +10,14 @@ interface Data {
   venue: string;
 }
 
-const data: Data[] = [
+const sampleData: Data[] = [
   { id: 1, course: "CourseID_1", venue: "A-05-04" },
   { id: 2, course: "CourseID_2", venue: "A-04-04" },
   { id: 3, course: "CourseID_3", venue: "A-06-04" },
 ];
 
 export default function QRMenus() {
-  const { setVenue, setCourse, setGenerateTrigger } = useQRData();
+  const { data, setData, setGenerateTrigger } = useQRData();
   const [isFetching, setIsFetching] = useState(false);
   // const [, setBackendUrl] = useState<string | undefined>(undefined);
 
@@ -66,29 +67,36 @@ export default function QRMenus() {
     <div>
       {renderField(
         "Course",
-        data,
+        sampleData,
         (item: Data) => item.course,
-        (item: Data) => setCourse(item.course)
+        (item: Data) => setData((prev) => ({ ...prev, course: item.course }))
       )}
       {renderField(
         "Venue",
-        data,
+        sampleData,
         (item: Data) => item.venue,
-        (item: Data) => setVenue(item.venue)
+        (item: Data) => setData((prev) => ({ ...prev, venue: item.venue }))
       )}
-      <button
-        type="button"
-        className={`mt-4 border font-semibold px-4 py-2 rounded-md transition duration-200
+      <div className="flex justify-between">
+        <button
+          type="button"
+          className={`mt-4 border font-semibold px-4 py-2 rounded-md transition duration-200
           ${
             isFetching
               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
               : "bg-purple-500 hover:bg-purple-600 text-white"
           }`}
-        onClick={handleGenerateQRCode}
-        disabled={isFetching}
-      >
-        Generate QR Code
-      </button>
+          onClick={handleGenerateQRCode}
+          disabled={isFetching}
+        >
+          Generate QR Code
+        </button>
+        {data.qrCode && (
+          <div className="flex justify-end items-end text-md font-semibold text-purple-700 underline hover:text-purple-500 transition duration-200">
+            <Link href={data.url}>Form Link</Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

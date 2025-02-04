@@ -9,10 +9,12 @@ export default function NotFound({ message }: { message?: string }) {
       <p className="mt-4 text-gray-600 text-lg">
         Oops! The page you&apos;re looking for doesn&apos;t exist.
       </p>
-
       {message && (
-        <div className="mt-4 bg-white rounded-sm shadow-sm">
-          <p className="mt-2 text-gray-600 text-lg">{message}</p>
+        <div className="mt-4 bg-white rounded-lg shadow-sm px-4 py-2">
+          <p className="text-gray-600 text-md font-semibold">
+            Message: &nbsp;
+            <span className="font-normal">{message}</span>
+          </p>
         </div>
       )}
       <Link
