@@ -92,8 +92,8 @@ export default function QRMenus() {
           Generate QR Code
         </button>
         {data.qrCode && (
-          <div className="flex justify-end items-end text-md font-semibold text-purple-700 underline hover:text-purple-500 transition duration-200">
-            <Link href={data.url}>Form Link</Link>
+          <div className="flex justify-end items-end text-sm font-semibold text-purple-700 underline hover:text-purple-500 transition duration-200">
+            <Link href={data.url} target="_blank" rel="noopener noreferrer">Form Link</Link>
           </div>
         )}
       </div>

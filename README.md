@@ -28,14 +28,11 @@
 
 ## API Endpoints
 ```bash
-### READ
-/api/qr/get?course={course} # GET - Get QR Code for course ID
-
-### CREATE
+### CREATE QRCODE
 /api/qr/generate # POST - Generate QR Code for course ID
 
-### SCAN
-/api/qr/scan # POST - Scan QR Code
+### FORM
+/api/attendance/form?course={course}&venue={venue} # GET - course and venue required
 ```
 
 ## Deploy on Vercel
