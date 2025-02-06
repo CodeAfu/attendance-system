@@ -21,8 +21,10 @@ export default async function FormPage({
   }
 
   return (
-    <div className="container">
-      <AttendanceForm title="Attendance" data={parsedSearchParams.data} />
+    <div className="bg-purple-50">
+      <div className="container">
+        <AttendanceForm title="Attendance" data={parsedSearchParams.data} />
+      </div>
     </div>
   );
 }
