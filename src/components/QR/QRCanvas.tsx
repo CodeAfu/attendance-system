@@ -14,7 +14,7 @@ interface UserResponseData {
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export default function QRCanvasComponent() {
+export default function QRCanvas() {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [status, setStatus] = useState<Status>("idle");
   const { data, generateTrigger, setData, setGenerateTrigger } = useQRData();
@@ -56,7 +56,6 @@ export default function QRCanvasComponent() {
             qrCode: output.data.QRCode,
             url: output.data.url,
           }));
-          console.log(data);
           setStatus("success");
         } else {
           throw new Error(
@@ -65,12 +64,12 @@ export default function QRCanvasComponent() {
         }
       } catch (error) {
         console.error(error);
-        setData({
-          course: "",
-          venue: "",
-          qrCode: null,
-          url: "#",
-        });
+        // setData({
+          // course: "",
+          // venue: "",
+          // qrCode: null,
+          // url: "#",
+        // });
         setStatus("error");
       } finally {
         setGenerateTrigger(false);

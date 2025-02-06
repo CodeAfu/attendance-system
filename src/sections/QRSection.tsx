@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import QRCanvasComponent from "@/components/QR/QRCanvas";
-import QRMenus from "@/components/QR/QRMenus";
+import QRCanvas from "@/components/qr/QRCanvas";
+import QRMenus from "@/components/qr/QRMenus";
 import { QRDataProvider } from "@/context/QRDataContext";
 
 export default function QRSection() {
@@ -12,10 +12,9 @@ export default function QRSection() {
           <QRMenus />
         </div>
         <div className="flex-1 flex items-center justify-center">
-          <QRCanvasComponent />
+          <QRCanvas />
         </div>
       </div>
     </QRDataProvider>
   );
 }
-  

@@ -1,13 +1,19 @@
 "use client";
+
 import React, { useState } from "react";
-import Dropdown from "@/components/Dropdown";
-import { useQRData } from "@/context/QRDataContext";
 import Link from "next/link";
+import { useQRData } from "@/context/QRDataContext";
+import { ComboBox } from "@/components/ui/combobox";
 
 interface Data {
   id: number;
   course: string;
   venue: string;
+}
+
+interface ComboBoxItem {
+  value: string;
+  label: string;
 }
 
 const sampleData: Data[] = [
@@ -17,34 +23,37 @@ const sampleData: Data[] = [
 ];
 
 export default function QRMenus() {
-  const { data, setData, setGenerateTrigger } = useQRData();
+  const { data, setGenerateTrigger } = useQRData();
   const [isFetching, setIsFetching] = useState(false);
-  // const [, setBackendUrl] = useState<string | undefined>(undefined);
 
-  // useEffect(() => {
-  //   QrEnvVariable().then((result) => {
-  //     setBackendUrl(result.url);
-  //   });
-  // }, []);
+  const courseItems = sampleData.map((item) => ({
+    value: item.course,
+    label: item.course,
+  })) as ComboBoxItem[];
 
-  const renderField = <T,>(
-    label: string,
-    data: T[],
-    labelProperty: (item: T) => string,
-    onChange: (item: T) => void
-  ) => {
-    return (
-      <div className="grid grid-cols-4 gap-4 max-w-[600px] items-center mb-1">
-        <h1 className="text-xl font-semibold col-span-1">{label}:</h1>
-        <Dropdown
-          items={data}
-          labelProperty={labelProperty}
-          onChange={onChange}
-          classArgs={"col-span-3"}
-        />
-      </div>
-    );
-  };
+  const venueItems = sampleData.map((item) => ({
+    value: item.venue,
+    label: item.venue,
+  })) as ComboBoxItem[];
+
+  // const renderField = <T,>(
+  //   label: string,
+  //   value: T[],
+  //   labelProperty: (item: T) => string,
+  //   onChange: (item: T) => void
+  // ) => {
+  //   return (
+  //     <div className="grid grid-cols-4 gap-4 max-w-[600px] items-center mb-1">
+  //       <h1 className="text-xl font-semibold col-span-1">{label}:</h1>
+  //       <Dropdown
+  //         items={value}
+  //         labelProperty={labelProperty}
+  //         onChange={onChange}
+  //         classArgs={"col-span-3"}
+  //       />
+  //     </div>
+  //   );
+  // };
 
   const handleGenerateQRCode = async () => {
     setIsFetching(true);
@@ -52,31 +61,20 @@ export default function QRMenus() {
     setIsFetching(false);
   };
 
-  // const getForm = async () => {
-  //   try {
-  //     setIsFetching(true);
-  //     // const url = await fetch(`${backendUrl}/api/qr/scan`);
-  //   } catch (err) {
-  //     console.error(err);
-  //   } finally {
-  //     setIsFetching(false);
-  //   }
-  // };
-
   return (
     <div>
-      {renderField(
-        "Course",
-        sampleData,
-        (item: Data) => item.course,
-        (item: Data) => setData((prev) => ({ ...prev, course: item.course }))
-      )}
-      {renderField(
-        "Venue",
-        sampleData,
-        (item: Data) => item.venue,
-        (item: Data) => setData((prev) => ({ ...prev, venue: item.venue }))
-      )}
+      {/* TODO: Convert to flex with a fixed size for span */}
+      <div className="grid grid-cols-4 gap-2 items-center mb-2">
+        <span className="col-span-1 text-xl">Course:</span>
+        <div className="col-span-3">
+          <ComboBox items={courseItems} fieldType={"course"} />
+        </div>{" "}
+        <span className="col-span-1 text-xl">Venue:</span>
+        <div className="col-span-3">
+          <ComboBox items={venueItems} fieldType={"venue"} />
+        </div>
+      </div>
+
       <div className="flex justify-between">
         <button
           type="button"
@@ -93,7 +91,9 @@ export default function QRMenus() {
         </button>
         {data.qrCode && (
           <div className="flex justify-end items-end text-sm font-semibold text-purple-700 underline hover:text-purple-500 transition duration-200">
-            <Link href={data.url} target="_blank" rel="noopener noreferrer">Form Link</Link>
+            <Link href={data.url} target="_blank" rel="noopener noreferrer">
+              Form Link
+            </Link>
           </div>
         )}
       </div>
