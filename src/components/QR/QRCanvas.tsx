@@ -103,8 +103,8 @@ export default function QRCanvas() {
         </div>
       )}
       {status === "idle" && !generateTrigger && (
-        <div className="text-gray-600 text-center mt-4 tracking-tight">
-          <span className="font-semibold">Waiting to generate QR Code.</span>
+        <div className="text-gray-600/50 text-center mt-4 tracking-tight select-none">
+          <span className="">Waiting to generate QR Code.</span>
         </div>
       )}
     </>

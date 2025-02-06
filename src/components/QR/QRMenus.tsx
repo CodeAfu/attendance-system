@@ -46,7 +46,7 @@ export default function QRMenus() {
   return (
     <div>
       {/* TODO: Convert to flex with a fixed size for span */}
-      <div className="md:grid md:grid-cols-4 gap-2 max-w-[400px] items-center">
+      <div className="md:grid md:grid-cols-4 md:items-center flex flex-col gap-2 max-w-[400px] ">
         <span className="col-span-1 text-md px-2">Course:</span>
         <div className="col-span-3">
           <ComboBox items={courseItems} fieldType={"course"} />
@@ -61,23 +61,12 @@ export default function QRMenus() {
         <Button
           onClick={handleGenerateQRCode}
           disabled={isFetching}
-          className={`mt-4`}
+          className={`md:mt-4 mt-6 ${
+            isFetching ? "opacity-50 bg-red-50 cursor-not-allowed" : ""
+          }`}
         >
           Generate QR Code
         </Button>
-        {/* <button
-          type="button"
-          className={`mt-4 border px-4 py-2 rounded-md transition duration-200
-          ${
-            isFetching
-              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-              : "bg-purple-500 hover:bg-purple-600 text-white"
-          }`}
-          onClick={handleGenerateQRCode}
-          disabled={isFetching}
-        >
-          Generate QR Code
-        </button> */}
         {data.qrCode && (
           <div className="flex justify-end items-end text-sm font-semibold text-purple-700 underline hover:text-purple-500 transition duration-200">
             <Link href={data.url} target="_blank" rel="noopener noreferrer">
