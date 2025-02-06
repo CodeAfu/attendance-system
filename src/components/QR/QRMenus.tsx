@@ -64,7 +64,7 @@ export default function QRMenus() {
   return (
     <div>
       {/* TODO: Convert to flex with a fixed size for span */}
-      <div className="grid grid-cols-4 gap-2 items-center mb-2">
+      <div className="md:grid md:grid-cols-4 gap-2 max-w-[600px] items-center">
         <span className="col-span-1 text-xl">Course:</span>
         <div className="col-span-3">
           <ComboBox items={courseItems} fieldType={"course"} />
@@ -92,7 +92,7 @@ export default function QRMenus() {
         {data.qrCode && (
           <div className="flex justify-end items-end text-sm font-semibold text-purple-700 underline hover:text-purple-500 transition duration-200">
             <Link href={data.url} target="_blank" rel="noopener noreferrer">
-              Form Link
+              Link
             </Link>
           </div>
         )}
