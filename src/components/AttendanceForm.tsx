@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import SignatureComponent from "@/components/form/Signature";
+import SignatureComponent from "@/components/Form/Signature";
 import { useState, ChangeEvent } from "react";
-import FormField from "@/components/form/FormField";
+import FormField from "@/components/Form/FormField";
 // import { getDateTime } from "@/utils/functions";
 
 interface AttendanceFormProps {

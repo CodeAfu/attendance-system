@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import QRCanvas from "@/components/qr/QRCanvas";
-import QRMenus from "@/components/qr/QRMenus";
+import QRCanvas from "@/components/QR/QRCanvas";
+import QRMenus from "@/components/QR/QRMenus";
 import { QRDataProvider } from "@/context/QRDataContext";
 
 export default function QRSection() {
