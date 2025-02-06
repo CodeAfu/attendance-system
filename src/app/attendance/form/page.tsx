@@ -1,11 +1,12 @@
 import NotFound from "@/app/not-found";
 import AttendanceForm from "@/components/AttendanceForm";
 import React from "react";
+import { z } from "zod";
 
-type Data = {
-  course: string;
-  venue: string;
-};
+const searchParamsSchema = z.object({
+  course: z.string().min(1),
+  venue: z.string().min(1),
+});
 
 export default async function FormPage({
   searchParams,
@@ -13,21 +14,15 @@ export default async function FormPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const course = resolvedSearchParams.course as string;
-  const venue = resolvedSearchParams.venue as string;
+  const parsedSearchParams = searchParamsSchema.safeParse(resolvedSearchParams);
 
-  if (!course || !venue) {
-    return <NotFound message="Please provide a course and venue value" />;
+  if (!parsedSearchParams.success) {
+    return <NotFound />;
   }
-
-  const data: Data = {
-    course,
-    venue,
-  };
 
   return (
     <div className="container">
-      <AttendanceForm title="Attendance" data={data ? data : undefined} />
+      <AttendanceForm title="Attendance" data={parsedSearchParams.data} />
     </div>
   );
 }

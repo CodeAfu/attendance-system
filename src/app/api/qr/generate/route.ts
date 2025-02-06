@@ -1,4 +1,4 @@
-import { APIResponse } from '@/utils/types';
+import { APIResponse } from '@/lib/types';
 import { NextResponse } from 'next/server';
 import QRCode from 'qrcode';
 

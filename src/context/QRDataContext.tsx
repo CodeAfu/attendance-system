@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useState, useContext } from "react";
-import { QRData } from "@/utils/types";
+import { QRData } from "@/lib/types";
 
 interface QRContextType {
   data: QRData;

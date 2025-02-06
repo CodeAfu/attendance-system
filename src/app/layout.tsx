@@ -9,8 +9,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Attendance",
-  description: "Please take your attendance.",
+  title: "APU Corporate Training Portal",
+  description:
+    "APU Corporate Training Portal is a web application for training managers " +
+    "and lecturers to manage training courses and attendance.",
 };
 
 export default function RootLayout({
@@ -21,8 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
-        <SpeedInsights />
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );

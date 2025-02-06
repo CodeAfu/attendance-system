@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { userSchema } from "@/app/api/form/user";
-import { courseSchema } from "@/app/api/form/course";
+import { userSchema, courseSchema } from "@/lib/validations";
 
 const formDataSchema = z.object({
   userSchema,

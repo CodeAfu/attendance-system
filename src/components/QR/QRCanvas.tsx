@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "@/components/Loading";
-import { APIResponse } from "@/utils/types";
+import { APIResponse } from "@/lib/types";
 import { useQRData } from "@/context/QRDataContext";
 
 interface UserResponseData {
