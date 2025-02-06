@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useQRData } from "@/context/QRDataContext";
 import { ComboBox } from "@/components/ui/combobox";
+import { Button } from "@/components/ui/button";
 
 interface Data {
   id: number;
@@ -36,25 +37,6 @@ export default function QRMenus() {
     label: item.venue,
   })) as ComboBoxItem[];
 
-  // const renderField = <T,>(
-  //   label: string,
-  //   value: T[],
-  //   labelProperty: (item: T) => string,
-  //   onChange: (item: T) => void
-  // ) => {
-  //   return (
-  //     <div className="grid grid-cols-4 gap-4 max-w-[600px] items-center mb-1">
-  //       <h1 className="text-xl font-semibold col-span-1">{label}:</h1>
-  //       <Dropdown
-  //         items={value}
-  //         labelProperty={labelProperty}
-  //         onChange={onChange}
-  //         classArgs={"col-span-3"}
-  //       />
-  //     </div>
-  //   );
-  // };
-
   const handleGenerateQRCode = async () => {
     setIsFetching(true);
     setGenerateTrigger(true);
@@ -64,21 +46,28 @@ export default function QRMenus() {
   return (
     <div>
       {/* TODO: Convert to flex with a fixed size for span */}
-      <div className="md:grid md:grid-cols-4 gap-2 max-w-[600px] items-center">
-        <span className="col-span-1 text-xl">Course:</span>
+      <div className="md:grid md:grid-cols-4 gap-2 max-w-[400px] items-center">
+        <span className="col-span-1 text-md px-2">Course:</span>
         <div className="col-span-3">
           <ComboBox items={courseItems} fieldType={"course"} />
         </div>{" "}
-        <span className="col-span-1 text-xl">Venue:</span>
+        <span className="col-span-1 text-md px-2">Venue:</span>
         <div className="col-span-3">
           <ComboBox items={venueItems} fieldType={"venue"} />
         </div>
       </div>
 
       <div className="flex justify-between">
-        <button
+        <Button
+          onClick={handleGenerateQRCode}
+          disabled={isFetching}
+          className={`mt-4`}
+        >
+          Generate QR Code
+        </Button>
+        {/* <button
           type="button"
-          className={`mt-4 border font-semibold px-4 py-2 rounded-md transition duration-200
+          className={`mt-4 border px-4 py-2 rounded-md transition duration-200
           ${
             isFetching
               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
@@ -88,7 +77,7 @@ export default function QRMenus() {
           disabled={isFetching}
         >
           Generate QR Code
-        </button>
+        </button> */}
         {data.qrCode && (
           <div className="flex justify-end items-end text-sm font-semibold text-purple-700 underline hover:text-purple-500 transition duration-200">
             <Link href={data.url} target="_blank" rel="noopener noreferrer">
