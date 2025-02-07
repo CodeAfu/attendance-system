@@ -44,7 +44,7 @@ export function ComboBox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[200px] justify-between bg-white"
         >
           {selectedItem ? selectedItem.label : placeholderText}
           <ChevronsUpDown className="opacity-50" />

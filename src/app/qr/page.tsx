@@ -6,7 +6,7 @@ export default async function QRPage() {
   // const course = (await params).slug;
 
   return (
-    <div className="min-h-screen flex flex-col bg-purple-50">
+    <div className="min-h-screen flex flex-col">
       <div className="container flex-1 flex flex-col">
         <QRSection />
       </div>

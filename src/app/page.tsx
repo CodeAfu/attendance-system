@@ -6,7 +6,7 @@ export default function Home() {
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16 lg:mt-12">
-            <h1 className="text-5xl font-bold mb-4">Attendance Portal</h1>
+            <h1 className="scroll-m-20 text-4xl lg:text-5xl font-extrabold tracking-tight mb-4">Corporate Training Portal</h1>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -34,7 +34,7 @@ export default function Home() {
                     </svg>
                   </div>
                   <div className="text-left">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                    <h2 className="scroll-m-20 text-2xl font-bold text-gray-800 mb-2">
                       Admin Panel
                     </h2>
                     <p className="text-gray-600">
