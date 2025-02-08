@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { courseSchema, userSchema } from "@/lib/validations";
+import { CourseSchema, UserSchema } from "@/lib/validations";
 
 export type DropdownType = {
   name: string;
@@ -23,8 +23,8 @@ export type QRData = {
 }
 
 // Zod
-export type User = z.infer<typeof userSchema>;
-export type Course = z.infer<typeof courseSchema>;
+export type User = z.infer<typeof UserSchema>;
+export type Course = z.infer<typeof CourseSchema>;
 
 // Enums
 export enum FetchType {

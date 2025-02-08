@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { userSchema, courseSchema } from "@/lib/validations";
+import { UserSchema, CourseSchema } from "@/lib/validations";
 
 const formDataSchema = z.object({
-  userSchema,
-  courseSchema,
+  userSchema: UserSchema,
+  courseSchema: CourseSchema,
 })
 
 
