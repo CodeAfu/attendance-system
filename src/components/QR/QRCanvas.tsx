@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "@/components/Loading";
-import { ActionResponse } from "@/lib/types";
+import { APIResponse } from "@/lib/types";
 import { useQRData } from "@/context/QRDataContext";
 
 interface UserResponseData {
@@ -47,8 +47,7 @@ export default function QRCanvas() {
           );
         }
 
-        const output =
-          (await response.json()) as ActionResponse<UserResponseData>;
+        const output = (await response.json()) as APIResponse<UserResponseData>;
 
         if (output.success && output.data) {
           setData(() => ({
