@@ -1,93 +1,86 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { LoginSchema } from "@/lib/validations";
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useActionState } from "react";
 import { login } from "@/app/account/actions";
+import { Label } from "@/components/ui/label";
+import { LoginFields } from "@/lib/types";
 
 interface FormStructure {
   label: string;
   name: string;
   type: string;
+  required?: boolean;
 }
 
 interface FormProps {
-  fields: FormStructure[];
+  inputFields: FormStructure[];
   header?: string;
 }
 
-export function InputForm({ fields, header }: FormProps) {
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: fields.reduce((acc, field) => {
-      acc[field.name] = "";
-      return acc;
-    }, {} as Record<string, string>),
-  });
+export function InputForm({ inputFields, header }: FormProps) {
+  const normalizedFields = inputFields.map((field) => ({
+    ...field,
+    required: field.required ?? true,
+  }));
 
-  const [state, loginAction] = useActionState(login, undefined);
-
-  function onSubmit(data: z.infer<typeof LoginSchema>) {
-    console.log(data);
-  }
+  const [state, loginAction, isPending] = useActionState(login, undefined);
 
   return (
-    <Form {...form}>
+    <Card className="w-full max-w-md p-3 shadow-sm rounded-lg">
       {header && (
-        <h1 className="text-3xl font-bold mb-8 text-center select-none">
-          {header}
-        </h1>
+        <CardHeader className="space-y-2">
+          <CardTitle>{header}</CardTitle>
+          <CardDescription>Sign in with username and password.</CardDescription>
+        </CardHeader>
       )}
-      <form
-        action={loginAction}
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6"
-      >
-        {fields.map(({ label, name, type }) => (
-          <FormField
-            key={name}
-            control={form.control}
-            name={name as keyof z.infer<typeof LoginSchema>}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{label}</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder={
-                      field.name.charAt(0).toUpperCase() + field.name.slice(1)
-                    }
-                    type={type}
-                    className="bg-slate-50"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        ))}
-        <Button type="submit" className="w-full mt-6">
-          Submit
-        </Button>
-        <div className="flex flex-col items-center gap-2 text-sm underline">
-          {/* <Link href="/account/forgot">Forgot password?</Link> */}
-          <Link href="/account/register">Create a new account</Link>
-        </div>
-      </form>
-    </Form>
+      <CardContent>
+        <form action={loginAction} className="flex flex-col gap-6">
+          <div className="space-y-6">
+            {normalizedFields.map((field) => (
+              <div key={field.name} className="space-y-2">
+                <Label htmlFor={field.name} className="font-semibold">
+                  {field.label}
+                </Label>
+                <Input
+                  {...field}
+                  defaultValue={
+                    state?.inputs?.[field.name as keyof LoginFields]
+                  }
+                  className="bg-white"
+                />
+                {state?.errors?.[field.name as keyof typeof state.errors] && (
+                  <p className="text-red-500 text-sm">
+                    {state.errors[field.name as keyof typeof state.errors]?.[0]}
+                  </p>
+                )}
+              </div>
+            ))}
+            <Button
+              type="submit"
+              className={`w-full ${isPending && "bg-gray-500 opacity-50"}`}
+              disabled={isPending}
+            >
+              Login
+            </Button>
+
+            <div className="flex flex-col items-center gap-2 text-sm underline">
+              <Link href="/account/register">
+                Create a new account (should I even include this)
+              </Link>
+            </div>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

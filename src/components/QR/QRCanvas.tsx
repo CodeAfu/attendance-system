@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Loading from "@/components/Loading";
-import { APIResponse } from "@/lib/types";
+import { ActionResponse } from "@/lib/types";
 import { useQRData } from "@/context/QRDataContext";
 
 interface UserResponseData {
@@ -47,7 +47,8 @@ export default function QRCanvas() {
           );
         }
 
-        const output = (await response.json()) as APIResponse<UserResponseData>;
+        const output =
+          (await response.json()) as ActionResponse<UserResponseData>;
 
         if (output.success && output.data) {
           setData(() => ({
@@ -65,10 +66,10 @@ export default function QRCanvas() {
       } catch (error) {
         console.error(error);
         // setData({
-          // course: "",
-          // venue: "",
-          // qrCode: null,
-          // url: "#",
+        // course: "",
+        // venue: "",
+        // qrCode: null,
+        // url: "#",
         // });
         setStatus("error");
       } finally {

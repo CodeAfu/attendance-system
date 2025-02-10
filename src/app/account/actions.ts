@@ -3,19 +3,28 @@
 import { LoginSchema } from "@/lib/validations";
 import { createSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { LoginState } from "@/lib/types";
 
 const testUser = {
   id: "1",
   email: "testEmail@donotreply.com",
-  password: "pass",
+  password: "password123",
 };
 
-export async function login(prevState: any, formData: FormData) {
+export async function login(
+  prevState: LoginState | undefined,
+  formData: FormData
+): Promise<LoginState | undefined> {
+  const formEntries = Object.fromEntries(formData) as Record<string, string>;
   const result = LoginSchema.safeParse(Object.fromEntries(formData));
 
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
+      inputs: {
+        email: formEntries.email ?? "",
+        password: formEntries.password ?? "",
+      },    
     }
   }
 
@@ -26,6 +35,7 @@ export async function login(prevState: any, formData: FormData) {
       errors: {
         email: ["Invalid email or password"],
       },
+      inputs: { email, password },
     }
   }
 

@@ -1,24 +1,13 @@
+import Header from "@/components/Header/Header";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
+      <Header />
       <div className="container mx-auto px-4 py-12">
-        <div className="flex items-center justify-end px-6">
-          <Link
-            href="/account/login"
-            className="text-md uppercase font-semibold tracking-wide"
-          >
-            Login
-          </Link>
-        </div>
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16 lg:mt-12">
-            <h1 className="scroll-m-20 text-4xl lg:text-5xl font-extrabold tracking-tight mb-4">
-              Corporate Training Portal
-            </h1>
-          </div>
-
+        <div className="flex items-center justify-end px-6"></div>
+        <div className="max-w-4xl mx-auto lg:mt-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Admin Card */}
             <Link

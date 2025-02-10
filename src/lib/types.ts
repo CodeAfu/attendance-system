@@ -1,6 +1,16 @@
 import { z } from "zod";
 import { CourseSchema, UserSchema } from "@/lib/validations";
 
+export type LoginState = {
+  errors?: Record<string, string[]>;
+  inputs?: LoginFields;
+};
+
+export type LoginFields = {
+  email: string;
+  password: string;
+}
+
 export type DropdownType = {
   name: string;
 }
@@ -13,6 +23,11 @@ export type Error = {
 export type APIResponse<T = unknown> = {
   success: boolean;
   data: T;
+}
+
+export type ActionResponse = {
+  success: boolean;
+  message: string;
 }
 
 export type QRData = {
