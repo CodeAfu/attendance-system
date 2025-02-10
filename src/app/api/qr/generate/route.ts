@@ -1,4 +1,4 @@
-import { ActionResponse } from '@/lib/types';
+import { APIResponse } from '@/lib/types';
 import { NextResponse } from 'next/server';
 import QRCode from 'qrcode';
 
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
       margin: 2,
     });
     
-    const response: ActionResponse = { 
+    const response: APIResponse = { 
       success: true, 
       data: {
         QRCode: qrCode,
