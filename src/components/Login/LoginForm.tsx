@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useActionState } from "react";
-import { login } from "@/app/account/actions";
+import { login } from "@/actions/account";
 import { Label } from "@/components/ui/label";
 import { LoginFields } from "@/lib/types";
 
