@@ -1,13 +1,14 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { parsedEnv } from "@/env";
 
 type SessionPayload = {
   userId: string;
   expiresAt: Date;
 };
 
-const secretKey = process.env.SESSION_SECRET;
+const secretKey = parsedEnv.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createSession(userId: string) {

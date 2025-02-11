@@ -40,7 +40,7 @@ export function InputForm({ inputFields, header }: FormProps) {
       {header && (
         <CardHeader className="space-y-2">
           <CardTitle>{header}</CardTitle>
-          <CardDescription>Sign in with username and password.</CardDescription>
+          <CardDescription>Sign in with email and password.</CardDescription>
         </CardHeader>
       )}
       <CardContent>
@@ -56,7 +56,7 @@ export function InputForm({ inputFields, header }: FormProps) {
                   defaultValue={
                     state?.inputs?.[field.name as keyof LoginFields]
                   }
-                  className="bg-white"
+                  className="bg-white focus-visible:ring-2 focus-visible:ring-purple-800 focus-visible:ring-offset-2"
                 />
                 {state?.errors?.[field.name as keyof typeof state.errors] && (
                   <p className="text-red-500 text-sm">
@@ -73,8 +73,19 @@ export function InputForm({ inputFields, header }: FormProps) {
               Login
             </Button>
 
+            {state?.errors?.message && (
+              <div className="border border-destructive/40 bg-destructive/10 rounded-lg p-2 space-y-1.5">
+                <p className="text-red-500 text-xs font-semibold">Error:</p>
+                {state.errors.message.map((msg, index) => (
+                  <p key={index} className="text-red-500 text-sm">
+                    - {msg}
+                  </p>
+                ))}
+              </div>
+            )}
+
             <div className="flex flex-col items-center gap-2 text-sm underline">
-              <Link href="/account/register">
+              <Link href="/account/register" className="text-center">
                 Create a new account (should I even include this)
               </Link>
             </div>

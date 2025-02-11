@@ -30,10 +30,11 @@ export async function login(
 
   const { email, password } = result.data;
 
+  // TODO: Replace this to check with DB users
   if (email !== testUser.email || password !== testUser.password) {
     return {
       errors: {
-        email: ["Invalid email or password"],
+        message: ["Invalid email or password"],
       },
       inputs: { email, password },
     }
