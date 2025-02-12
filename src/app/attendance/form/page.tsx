@@ -1,5 +1,5 @@
 import NotFound from "@/app/not-found";
-import AttendanceForm from "@/components/AttendanceForm";
+import AttendanceForm from "@/components/form/AttendanceForm";
 import React from "react";
 import { z } from "zod";
 
