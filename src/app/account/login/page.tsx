@@ -1,5 +1,5 @@
 import React from "react";
-import { InputForm } from "@/components/Login/LoginForm";
+import { InputForm } from "@/components/login/LoginForm";
 import bgImage from "../../../../public/assets/login-background.jpg";
 
 const fields = [
