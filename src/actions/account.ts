@@ -4,12 +4,8 @@ import { LoginSchema } from "@/lib/validations";
 import { createSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { LoginState } from "@/lib/types";
-
-const testUser = {
-  id: "1",
-  email: "testEmail@donotreply.com",
-  password: "password123",
-};
+import { prisma } from "@/lib/prisma";
+import { checkPassword } from "@/lib/pw-auth";
 
 export async function login(
   prevState: LoginState | undefined,
@@ -18,6 +14,7 @@ export async function login(
   const formEntries = Object.fromEntries(formData) as Record<string, string>;
   const result = LoginSchema.safeParse(Object.fromEntries(formData));
 
+  // zod validation
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
@@ -27,20 +24,49 @@ export async function login(
       },    
     }
   }
-
   const { email, password } = result.data;
 
-  // TODO: Replace this to check with DB users
-  if (email !== testUser.email || password !== testUser.password) {
-    return {
-      errors: {
-        message: ["Invalid email or password"],
-      },
-      inputs: { email, password },
-    }
-  }
+  // DB validation
+  try {
+    const user = await prisma.user.findFirst({ 
+      where: {
+        email
+      }, 
+      select: {
+        id: true,
+        email: true,
+        hashedPassword: true
+      }
+    });
 
-  await createSession(testUser.id);
+    if (!user) {
+      return {
+        errors: {
+          message: ["Invalid email or password"]
+        },
+        inputs: {
+          email: formEntries.email ?? "",
+          password: formEntries.password ?? "",
+        },
+      }
+    }
+
+    const isValidPassword = await checkPassword(password, user.hashedPassword);
+    if (!isValidPassword) {
+      return {
+        errors: {
+          message: ["Invalid email or password"]
+        },
+        inputs: {
+          email: formEntries.email ?? "",
+          password: formEntries.password ?? "",
+        },
+      }
+    }
+    await createSession(user.id);
+  } catch (error) {
+    console.error(error);
+  }
 
   redirect("/admin");
 }

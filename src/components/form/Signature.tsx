@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import SignatureCanvasComponent from "./SignatureCanvas";
+import SignatureCanvasComponent from "@/components/form/SignatureCanvas";
 
 interface SignatureComponentProps {
   name: string;

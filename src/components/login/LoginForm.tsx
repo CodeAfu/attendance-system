@@ -14,6 +14,7 @@ import { useActionState } from "react";
 import { login } from "@/actions/account";
 import { Label } from "@/components/ui/label";
 import { LoginFields } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 interface FormStructure {
   label: string;
@@ -56,7 +57,11 @@ export function InputForm({ inputFields, header }: FormProps) {
                   defaultValue={
                     state?.inputs?.[field.name as keyof LoginFields]
                   }
-                  className="bg-white focus-visible:ring-2 focus-visible:ring-purple-800 focus-visible:ring-offset-2"
+                  className={cn(
+                    "bg-white focus-visible:ring-2 focus-visible:ring-purple-800 focus-visible:ring-offset-2",
+                    state?.errors?.[field.name as keyof typeof state.errors] &&
+                      "border-destructive"
+                  )}
                 />
                 {state?.errors?.[field.name as keyof typeof state.errors] && (
                   <p className="text-red-500 text-sm">
@@ -65,6 +70,7 @@ export function InputForm({ inputFields, header }: FormProps) {
                 )}
               </div>
             ))}
+
             <Button
               type="submit"
               className={`w-full ${isPending && "bg-gray-500 opacity-50"}`}
@@ -86,7 +92,7 @@ export function InputForm({ inputFields, header }: FormProps) {
 
             <div className="flex flex-col items-center gap-2 text-sm underline">
               <Link href="/account/register" className="text-center">
-                Create a new account (should I even include this)
+                Create a new account (Add this to admin panel)
               </Link>
             </div>
           </div>
