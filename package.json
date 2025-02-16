@@ -7,11 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate:postgres": "dotenv -e .env.local -- npx prisma migrate deploy",
-    "push:postgres": "dotenv -e .env.local -- npx prisma db push",
-    "studio:postgres": "dotenv -e .env.local -- npx prisma studio",
+    "migrate:postgres": "npx prisma migrate deploy",
+    "push:postgres": "npx prisma db push",
+    "studio:postgres": "npx prisma studio",
     "prisma:generate": "prisma generate --schema=./packages/db/schema.prisma",
-    "postinstall": "dotenv -e .env.local -- prisma generate && prisma migrate deploy"
+    "postinstall": "prisma generate && prisma migrate deploy"
   },
   "prisma": {
     "seed": "dotenv -e .env.local -- ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
