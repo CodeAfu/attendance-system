@@ -3,6 +3,7 @@ import apuLogo from "../../../public/assets/APU_Colour_Logo.png";
 import Image from "next/image";
 import { isLoggedIn } from "@/lib/account-utils";
 import { logout } from "@/actions/account";
+import Avatar from "@/components/Avatar";
 
 export default async function Header() {
   const loggedIn = await isLoggedIn();
@@ -24,23 +25,26 @@ export default async function Header() {
           </Link>
         </div>
 
-        {!loggedIn ? (
-          <Link
-            href="/account/login"
-            className="text-md uppercase font-bold px-3 py-1.5 tracking-tight rounded-full bg-purple-50 hover:bg-purple-200 transition duration-200"
-          >
-            Login
-          </Link>
-        ) : (
-          <form action={logout}>
-            <button
-              type="submit"
-              className="text-md uppercase font-bold px-3 py-1.5 tracking-tight rounded-full bg-purple-50 hover:bg-purple-200 transition duration-200"
+        <div className="flex gap-3 items-center">
+          {loggedIn && <Avatar className={"mx-10"} />}
+          {!loggedIn ? (
+            <Link
+              href="/account/login"
+              className="text-md uppercase font-bold px-4 py-2 tracking-tight rounded-md bg-purple-100 hover:bg-purple-500 hover:text-white transition duration-200"
             >
-              Logout
-            </button>
-          </form>
-        )}
+              Login
+            </Link>
+          ) : (
+            <form action={logout}>
+              <button
+                type="submit"
+                className="text-md uppercase font-bold px-4 py-2 tracking-tight rounded-md bg-purple-100 hover:bg-purple-500 hover:text-white transition duration-200"
+              >
+                Logout
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

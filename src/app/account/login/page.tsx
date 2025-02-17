@@ -1,5 +1,5 @@
 import React from "react";
-import { InputForm } from "@/components/login/LoginForm";
+import { LoginForm } from "@/components/login/LoginForm";
 import bgImage from "../../../../public/assets/login-background.jpg";
 
 const fields = [
@@ -29,8 +29,7 @@ export default function LoginPage() {
         }}
         className="fixed top-0 left-0 w-full h-full -z-10"
       />
-      <InputForm header="Login" inputFields={fields} />
+      <LoginForm header="Login" inputFields={fields} />
     </div>
   );
 }
-
