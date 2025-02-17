@@ -10,8 +10,12 @@ type SessionPayload = {
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export async function createSession(userId: string) {
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+export async function createSession(userId: string | null) {
+  if (!userId) {
+    throw new Error("User ID is required to create a session.");
+  }
+  
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
   const session = await encrypt({ userId, expiresAt });
 
   const cookieStore = await cookies();
@@ -24,7 +28,8 @@ export async function createSession(userId: string) {
 
 export async function deleteSession() {
   const cookieStore = await cookies();
-  cookieStore.delete("session");}
+  cookieStore.delete("session");
+}
 
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)

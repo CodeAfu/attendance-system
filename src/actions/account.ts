@@ -1,11 +1,11 @@
 "use server";
 
 import { LoginSchema } from "@/lib/validations";
-import { createSession } from "@/lib/session";
+import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { LoginState } from "@/lib/types";
 import { prisma } from "@/lib/prisma";
-import { checkPassword } from "@/lib/pw-auth";
+import { checkPassword } from "@/lib/account-utils";
 
 export async function login(
   prevState: LoginState | undefined,
@@ -25,6 +25,7 @@ export async function login(
     }
   }
   const { email, password } = result.data;
+  const redirectTo = formEntries.redirectTo || "/admin";
 
   // DB validation
   try {
@@ -67,11 +68,10 @@ export async function login(
   } catch (error) {
     console.error(error);
   }
-
-  redirect("/admin");
+  redirect(redirectTo);
 }
 
 export async function logout() {
-
+  await deleteSession();
 }
 

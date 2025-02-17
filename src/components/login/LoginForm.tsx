@@ -46,6 +46,11 @@ export function InputForm({ inputFields, header }: FormProps) {
       )}
       <CardContent>
         <form action={loginAction} className="flex flex-col gap-6">
+          <input
+            type="hidden"
+            name="redirectTo"
+            value={window.location.pathname}
+          />
           <div className="space-y-6">
             {normalizedFields.map((field) => (
               <div key={field.name} className="space-y-2">
@@ -62,6 +67,7 @@ export function InputForm({ inputFields, header }: FormProps) {
                     state?.errors?.[field.name as keyof typeof state.errors] &&
                       "border-destructive"
                   )}
+                  disabled={isPending}
                 />
                 {state?.errors?.[field.name as keyof typeof state.errors] && (
                   <p className="text-red-500 text-sm">
