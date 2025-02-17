@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { LoginFields } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import PulseLoader from "react-spinners/PulseLoader";
 
 interface FormStructure {
   label: string;
@@ -85,7 +86,11 @@ export function LoginForm({ inputFields, header }: FormProps) {
               className={`w-full ${isPending && "bg-gray-500 opacity-50"}`}
               disabled={isPending}
             >
-              Login
+              {isPending ? (
+                <PulseLoader cssOverride={{}} size={8} speedMultiplier={0.7} />
+              ) : (
+                "Login"
+              )}
             </Button>
 
             {state?.errors?.message && (
