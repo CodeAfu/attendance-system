@@ -29,7 +29,7 @@ export async function login(
 
   // DB validation
   try {
-    const user = await prisma.user.findFirst({ 
+    const user = await prisma.systemUser.findFirst({ 
       where: {
         email
       }, 

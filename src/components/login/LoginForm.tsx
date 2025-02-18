@@ -87,7 +87,7 @@ export function LoginForm({ inputFields, header }: FormProps) {
               disabled={isPending}
             >
               {isPending ? (
-                <PulseLoader cssOverride={{}} size={8} speedMultiplier={0.7} />
+                <PulseLoader size={8} speedMultiplier={0.7} />
               ) : (
                 "Login"
               )}

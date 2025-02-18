@@ -31,6 +31,17 @@ export async function deleteSession() {
   cookieStore.delete("session");
 }
 
+export async function getSession() {
+  const cookieStore = await cookies();
+  return cookieStore.get("session");
+}
+
+export async function validateSession() {
+  const session = await getSession();
+  const sessionData = await decrypt(session?.value);
+  return !!sessionData?.userId;
+}
+
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
