@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const UserSchema = z.object({
+export const TraineeSchema = z.object({
   name: z.string().min(1, "Please provide your name"),
   employer: z.string().min(1, "Please provide your employer"),
   NRIC: z.string().regex(

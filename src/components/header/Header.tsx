@@ -10,7 +10,7 @@ export default async function Header() {
 
   return (
     <div className="flex w-full bg-white/50 items-center justify-center p-1 h-16">
-      <div className="md:w-3/4 w-full flex items-center justify-between">
+      <div className="lg:w-3/4 w-full flex items-center justify-between">
         <div>
           <Link
             href="/"

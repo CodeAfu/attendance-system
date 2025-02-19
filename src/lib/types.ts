@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CourseSchema, UserSchema } from "@/lib/validations";
+import { CourseSchema, TraineeSchema } from "@/lib/validations";
 
 export type LoginState = {
   errors?: Record<string, string[]>;
@@ -38,7 +38,7 @@ export type QRData = {
 }
 
 // Zod
-export type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof TraineeSchema>;
 export type Course = z.infer<typeof CourseSchema>;
 
 // Enums
