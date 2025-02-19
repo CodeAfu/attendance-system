@@ -35,6 +35,7 @@ export async function getAccountByEmail(email: string) {
   if (!validateSession()) return {
     message: "Please login to an authorized account to perform this action",
   };
+
   const user = prisma.systemUser.findFirst({
     where: {
       email

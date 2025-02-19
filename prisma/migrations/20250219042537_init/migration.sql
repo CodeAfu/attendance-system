@@ -1,17 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `courseId` to the `TraineeRecord` table without a default value. This is not possible if the table is not empty.
-
-*/
--- AlterTable
-ALTER TABLE "TraineeRecord" ADD COLUMN     "attendanceRecordId" TEXT,
-ADD COLUMN     "courseId" TEXT NOT NULL;
-
--- DropTable
-DROP TABLE "User";
-
 -- CreateTable
 CREATE TABLE "SystemUser" (
     "id" TEXT NOT NULL,
@@ -33,11 +19,30 @@ CREATE TABLE "Course" (
     "id" TEXT NOT NULL,
     "courseName" TEXT NOT NULL,
     "courseId" TEXT NOT NULL,
-    "trainerName" TEXT NOT NULL,
+    "trainerName" TEXT,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Course_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TraineeRecord" (
+    "id" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
+    "gender" TEXT,
+    "dob" TEXT,
+    "citizenship" TEXT,
+    "nric" TEXT,
+    "email" TEXT,
+    "contactNo" TEXT,
+    "employer" TEXT NOT NULL,
+    "courseId" TEXT,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TraineeRecord_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -47,6 +52,9 @@ CREATE TABLE "AttendanceRecord" (
     "venue" TEXT,
     "date" TIMESTAMP(3) NOT NULL,
     "base64Signature" TEXT NOT NULL,
+    "traineeRecordId" TEXT,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "AttendanceRecord_pkey" PRIMARY KEY ("id")
 );
@@ -57,11 +65,14 @@ CREATE UNIQUE INDEX "SystemUser_email_key" ON "SystemUser"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "Course_courseId_key" ON "Course"("courseId");
 
--- AddForeignKey
-ALTER TABLE "TraineeRecord" ADD CONSTRAINT "TraineeRecord_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "TraineeRecord_nric_key" ON "TraineeRecord"("nric");
 
 -- AddForeignKey
-ALTER TABLE "TraineeRecord" ADD CONSTRAINT "TraineeRecord_attendanceRecordId_fkey" FOREIGN KEY ("attendanceRecordId") REFERENCES "AttendanceRecord"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "TraineeRecord" ADD CONSTRAINT "TraineeRecord_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AttendanceRecord" ADD CONSTRAINT "AttendanceRecord_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AttendanceRecord" ADD CONSTRAINT "AttendanceRecord_traineeRecordId_fkey" FOREIGN KEY ("traineeRecordId") REFERENCES "TraineeRecord"("id") ON DELETE SET NULL ON UPDATE CASCADE;

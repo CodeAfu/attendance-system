@@ -34,3 +34,15 @@
 ### FORM
 /api/attendance/form?course={course}&venue={venue} # GET - course and venue required
 ```
+
+## Future Reference
+Initalize
+```bash
+docker run --name local-attendance-db -e POSTGRES_USER=localuser -e POSTGRES_PASSWORD=localpass -e POSTGRES_DB=localdb
+ -p 5433:5432 -d postgres
+```
+
+Connect
+```bash
+docker exec -it local-attendance-db psql -U localuser -d localdb
+```
