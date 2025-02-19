@@ -32,13 +32,13 @@ model Course {
   courseName        String
   courseId          String             @unique
   trainerName       String?
-  trainees          TraineeRecord[]
+  trainees          Trainee[]
   attendanceRecords AttendanceRecord[]
   updatedAt         DateTime           @updatedAt
   createdAt         DateTime           @default(now())
 }
 
-model TraineeRecord {
+model Trainee {
   id                String             @id @default(cuid())
   firstName         String
   lastName          String
@@ -48,7 +48,7 @@ model TraineeRecord {
   nric              String?            @unique
   email             String?
   contactNo         String?
-  employer          String
+  employer          String?
   Course            Course?            @relation(fields: [courseId], references: [id])
   courseId          String?
   attendanceRecords AttendanceRecord[]
@@ -63,7 +63,7 @@ model AttendanceRecord {
   venue           String?
   date            DateTime
   base64Signature String
-  TraineeRecord   TraineeRecord? @relation(fields: [traineeRecordId], references: [id])
+  TraineeRecord   Trainee? @relation(fields: [traineeRecordId], references: [id])
   traineeRecordId String?
   updatedAt       DateTime       @updatedAt
   createdAt       DateTime       @default(now())

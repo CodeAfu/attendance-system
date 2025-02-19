@@ -10,12 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState } from "react";
 import { login } from "@/actions/account";
 import { Label } from "@/components/ui/label";
 import { LoginFields } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
 import PulseLoader from "react-spinners/PulseLoader";
 
 interface FormStructure {
@@ -37,12 +36,12 @@ export function LoginForm({ inputFields, header }: FormProps) {
   }));
 
   const [state, loginAction, isPending] = useActionState(login, undefined);
-  const pathname = usePathname();
-  const [redirectTo, setRedirectTo] = useState(pathname);
+  // const pathname = usePathname();
+  // const [redirectTo, setRedirectTo] = useState(pathname);
 
-  useEffect(() => {
-    setRedirectTo(pathname);
-  }, [pathname]);
+  // useEffect(() => {
+  //   setRedirectTo(pathname);
+  // }, [pathname]);
 
   return (
     <Card className="w-full max-w-md p-3 shadow-sm rounded-lg">
@@ -54,7 +53,7 @@ export function LoginForm({ inputFields, header }: FormProps) {
       )}
       <CardContent>
         <form action={loginAction} className="flex flex-col gap-6">
-          <input type="hidden" name="redirectTo" value={redirectTo} />
+          {/* <input type="hidden" name="redirectTo" value={redirectTo} /> */}
           <div className="space-y-6">
             {normalizedFields.map((field) => (
               <div key={field.name} className="space-y-2">

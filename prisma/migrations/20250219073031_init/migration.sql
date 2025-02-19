@@ -27,7 +27,7 @@ CREATE TABLE "Course" (
 );
 
 -- CreateTable
-CREATE TABLE "TraineeRecord" (
+CREATE TABLE "Trainee" (
     "id" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
@@ -37,12 +37,12 @@ CREATE TABLE "TraineeRecord" (
     "nric" TEXT,
     "email" TEXT,
     "contactNo" TEXT,
-    "employer" TEXT NOT NULL,
+    "employer" TEXT,
     "courseId" TEXT,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "TraineeRecord_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Trainee_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -66,13 +66,13 @@ CREATE UNIQUE INDEX "SystemUser_email_key" ON "SystemUser"("email");
 CREATE UNIQUE INDEX "Course_courseId_key" ON "Course"("courseId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TraineeRecord_nric_key" ON "TraineeRecord"("nric");
+CREATE UNIQUE INDEX "Trainee_nric_key" ON "Trainee"("nric");
 
 -- AddForeignKey
-ALTER TABLE "TraineeRecord" ADD CONSTRAINT "TraineeRecord_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Trainee" ADD CONSTRAINT "Trainee_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AttendanceRecord" ADD CONSTRAINT "AttendanceRecord_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttendanceRecord" ADD CONSTRAINT "AttendanceRecord_traineeRecordId_fkey" FOREIGN KEY ("traineeRecordId") REFERENCES "TraineeRecord"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "AttendanceRecord" ADD CONSTRAINT "AttendanceRecord_traineeRecordId_fkey" FOREIGN KEY ("traineeRecordId") REFERENCES "Trainee"("id") ON DELETE SET NULL ON UPDATE CASCADE;
