@@ -3,7 +3,7 @@ import apuLogo from "../../../public/assets/APU_Colour_Logo.png";
 import Image from "next/image";
 import { isLoggedIn } from "@/lib/account-utils";
 import { logout } from "@/actions/account";
-import UserDetails from "@/components/UserDetails";
+import UserDetails from "@/components/user-details";
 
 export default async function Header() {
   const loggedIn = await isLoggedIn();

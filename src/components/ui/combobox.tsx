@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useQRData } from "@/context/QRDataContext";
+import { useQRData } from "@/context/qrdata-context";
 
 export function ComboBox({
   items,

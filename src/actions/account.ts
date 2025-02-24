@@ -39,7 +39,7 @@ export async function login(
         hashedPassword: true
       }
     });
-
+    
     if (!user) {
       return {
         errors: {
@@ -64,6 +64,7 @@ export async function login(
         },
       }
     }
+
     await createSession(user.id);
   } catch (error) {
     console.error(error);

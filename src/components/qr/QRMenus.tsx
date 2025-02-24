@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useQRData } from "@/context/QRDataContext";
+import { useQRData } from "@/context/qrdata-context";
 import { ComboBox } from "@/components/ui/combobox";
 import { Button } from "@/components/ui/button";
 

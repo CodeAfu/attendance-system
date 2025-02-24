@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Loading from "@/components/Loading";
+import Loading from "@/components/loading";
 import { APIResponse } from "@/lib/types";
-import { useQRData } from "@/context/QRDataContext";
+import { useQRData } from "@/context/qrdata-context";
 
 interface UserResponseData {
   QRCode: string;

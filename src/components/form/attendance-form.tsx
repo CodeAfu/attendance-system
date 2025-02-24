@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import SignatureComponent from "@/components/form/Signature";
+import SignatureComponent from "@/components/form/signature";
 import { useState, ChangeEvent } from "react";
-import FormField from "@/components/form/FormField";
+import FormField from "@/components/form/form-field";
 // import { getDateTime } from "@/utils/functions";
 
 interface AttendanceFormProps {
@@ -88,7 +88,7 @@ export default function AttendanceForm({ title, data }: AttendanceFormProps) {
 
         <SignatureComponent name={name} />
         <Link
-          href="/submit"
+          href="/attendance/form/submit"
           type="submit"
           className="w-full bg-purple-500 text-white text-center font-semibold py-2 px-4 rounded-md hover:bg-purple-600 transition duration-200"
         >

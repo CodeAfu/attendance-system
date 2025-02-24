@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
 
 async function main() {
-  if (!process.env.ADMIN_PASSWORD) throw new Error('ADMIN_PASSWORD is not set');
+  if (!process.env.ADMIN_PASSWORD) throw new Error('ADMIN_PASSWORD is not set in the environment.');
   const password: string = process.env.ADMIN_PASSWORD;
 
   const user = await prisma.systemUser.upsert({
@@ -16,6 +16,10 @@ async function main() {
       role: 'admin',
     }
   });
+  
+  // const course = await prisma.course.upsert({
+  //   where: { courseId: "Data_Analytics_Pracitioner_" }
+  // })
   console.log({ user });
 }
 main()

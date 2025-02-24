@@ -1,48 +1,89 @@
+# Corporate Attendance System
+A web application for training managers and lecturers to manage training courses and attendance, built for APU.
 
-## Checklist
-- Create Attendance Form Page ✅
-- Create Submit Page 🔨
-- Use Dynamic Routing to display QR Code for each **venue/course/venue-course** (choose 1) combination 
-- Create Admin Panel ❌
+## Data Model
 
-## Use Case
-- Generate a QR code for **course ID**
-- User scans QR code
-- Form is fetched for the **course ID**
-- User fills out form and submits
-- **API is called to create attendance record**
+#### User
+- **Email**
+- **Password**
+- **Role**
+- **Image**
+- **Is Locked**
+- **Lock Start**
+- **Lock End**
 
-## Data
-- User
-    - Name
-    - Employer
-    - NRIC
-    - Citizenship
-    - Gender
-    - Signature
-- Course Details
-    - Course ID
-    - Venue
-- Date
+#### Trainee
+- **First Name**
+- **Last Name**
+- **Gender**
+- **Date of Birth**
+- **Citizenship**
+- **NRIC**
+- **Email**
+- **Contact Number**
+- **Employer**
+- **Course ID**
 
+#### Course
+- **Course ID**
+- **Course Name**
+- **Trainer Name**
 
-## API Endpoints
-```bash
-### CREATE QRCODE
-/api/qr/generate # POST - Generate QR Code for course ID
+#### Attendance Record
+- **ID**
+- **Course ID**
+- **Venue**
+- **Date**
+- **Base 64 Signature**
+- **Trainee Record ID**
 
-### FORM
-/api/attendance/form?course={course}&venue={venue} # GET - course and venue required
-```
+### User
+- **Name**
+- **Employer**
+- **NRIC**
+- **Citizenship**
+- **Gender**
+- **Signature**
+
+### Course Details
+- **Course ID**
+- **Venue**
 
 ## Future Reference
-Initalize
+
+### Local Postgres DB via Docker
+
+#### Initialize Database
 ```bash
-docker run --name local-attendance-db -e POSTGRES_USER=localuser -e POSTGRES_PASSWORD=localpass -e POSTGRES_DB=localdb
- -p 5433:5432 -d postgres
+docker run --name local-attendance-db -e POSTGRES_USER=localuser -e POSTGRES_PASSWORD=localpass -e POSTGRES_DB=localdb -p 5433:5432 -d postgres
 ```
 
-Connect
+#### Connect to Database via psql (CLI for postgres)
 ```bash
 docker exec -it local-attendance-db psql -U localuser -d localdb
 ```
+
+## Notes
+- *Nothing here for now*
+
+## Workflow
+
+### Development Point of View
+1. Create **Course** via admin panel.
+2. Add **Trainees** to course via admin panel.
+3. Generate QR Code for **Course ID**.
+4. **Trainee** scans QR Code and fills out the form.
+5. Form submission creates an **Attendance Record**.
+
+### Client Point of View
+- *To be added*
+
+## Questions
+- Do we create courses in the web app?
+  - *Involves manually inserting data via admin panel.*
+- Do we store Trainee information in the web app database?
+  - *Involves manually inserting data via admin panel.*
+- Which aspect do you want to specifically automate? (Personal workload, Attendance collection process)
+- Verify the workflow of the attendance process.
+  - *Take note of the workflow.*
+
