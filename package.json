@@ -7,10 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate:postgres": "npx prisma migrate deploy",
-    "push:postgres": "npx prisma db push",
-    "studio:postgres": "npx prisma studio",
-    "prisma:generate": "prisma generate --schema=./packages/db/schema.prisma",
     "postinstall": "prisma generate && prisma migrate deploy"
   },
   "prisma": {
@@ -49,7 +45,8 @@
     "react-spinners": "^0.15.0",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

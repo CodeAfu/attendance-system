@@ -1,17 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("NEXT_PUBLIC_POSTGRES_DATABASE_URL")
-  shadowDatabaseUrl = env("LOCAL_DATABASE_URL")
+  provider = "postgresql"
+  url      = env("NEXT_PUBLIC_POSTGRES_DATABASE_URL")
 }
 
 model SystemUser {
@@ -30,10 +23,13 @@ model SystemUser {
 model Course {
   id                String             @id @default(cuid())
   courseName        String
-  courseId          String             @unique
+  courseId          String             @unique // Combination of Course Name and Training Date
   trainerName       String?
-  trainees          Trainee[]
+  startDate         DateTime?          @db.Timestamptz
+  endDate           DateTime?          @db.Timestamptz
+  venue             String?
   attendanceRecords AttendanceRecord[]
+  trainee           Trainee[]
   updatedAt         DateTime           @updatedAt
   createdAt         DateTime           @default(now())
 }
@@ -49,22 +45,19 @@ model Trainee {
   email             String?
   contactNo         String?
   employer          String?
-  Course            Course?            @relation(fields: [courseId], references: [id])
-  courseId          String?
   attendanceRecords AttendanceRecord[]
+  courses           Course[]
   updatedAt         DateTime           @updatedAt
   createdAt         DateTime           @default(now())
 }
 
 model AttendanceRecord {
   id              String   @id @default(cuid())
-  course          Course   @relation(fields: [courseId], references: [id])
+  Trainee         Trainee? @relation(fields: [traineeId], references: [id])
+  traineeId       String?
+  course          Course?  @relation(fields: [courseId], references: [id])
   courseId        String
-  venue           String?
-  date            DateTime
   base64Signature String
-  TraineeRecord   Trainee? @relation(fields: [traineeRecordId], references: [id])
-  traineeRecordId String?
   updatedAt       DateTime @updatedAt
   createdAt       DateTime @default(now())
 }

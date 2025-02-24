@@ -2,7 +2,7 @@ import Link from "next/link";
 import apuLogo from "../../../public/assets/APU_Colour_Logo.png";
 import Image from "next/image";
 import { isLoggedIn } from "@/lib/account-utils";
-import { logout } from "@/actions/account";
+import { logout } from "@/actions/account-auth";
 import UserDetails from "@/components/user-details";
 
 export default async function Header() {
