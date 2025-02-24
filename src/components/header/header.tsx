@@ -14,7 +14,7 @@ export default async function Header() {
         <div>
           <Link
             href="/"
-            className="md:text-xl text-md font-extrabold flex items-center gap-2"
+            className="text-xl font-extrabold flex items-center gap-2"
           >
             <span className="mr-3 text-sm font-medium rounded-full">
               <Image src={apuLogo} alt="APU Logo" width={40} height={40} />

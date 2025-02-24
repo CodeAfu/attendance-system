@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -44,13 +43,13 @@ export function ComboBox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between bg-white"
+          className="md:w-60 justify-between bg-white"
         >
           {selectedItem ? selectedItem.label : placeholderText}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start">
+      <PopoverContent align="start" className="p-1 min-w-full">
         <Command>
           <CommandInput
             placeholder={`Search ${
@@ -68,14 +67,6 @@ export function ComboBox({
                     setOpen(false);
                   }}
                 >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      data[fieldType] === item.value
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
                   {item.label}
                 </CommandItem>
               ))}
