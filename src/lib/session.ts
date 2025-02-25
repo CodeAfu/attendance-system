@@ -4,26 +4,52 @@ import { cookies } from "next/headers";
 
 type SessionPayload = {
   userId: string;
+  role: string;
   expiresAt: Date;
 };
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export async function createSession(userId: string | null) {
+export async function createSession(userId: string | null, role: string | null) {
   if (!userId) {
     throw new Error("User ID is required to create a session.");
   }
+  if (!role) {
+    throw new Error("User does not have a role.");
+  }
   
   const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
-
+  const session = await encrypt({ userId, role, expiresAt });
   const cookieStore = await cookies();
+
   cookieStore.set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
+    sameSite: "lax",
+    path: "/",
   });
+}
+
+export async function updateSession() {
+  const session = (await cookies()).get('session')?.value;
+  const payload = await decrypt(session);
+
+  if (!session || !payload) {
+    return null;
+  }
+
+  const expires = new Date(Date.now() + 15 * 60 * 1000)
+ 
+  const cookieStore = await cookies()
+  cookieStore.set('session', session, {
+    httpOnly: true,
+    secure: true,
+    expires: expires,
+    sameSite: 'lax',
+    path: '/',
+  })
 }
 
 export async function deleteSession() {
@@ -33,12 +59,12 @@ export async function deleteSession() {
 
 export async function getSession() {
   const cookieStore = await cookies();
-  return cookieStore.get("session");
+  return cookieStore.get("session")?.value;
 }
 
-export async function validateSession() {
+export async function isValidSession() {
   const session = await getSession();
-  const sessionData = await decrypt(session?.value);
+  const sessionData = await decrypt(session);
   return !!sessionData?.userId;
 }
 

@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/prisma";
-import { decrypt, getSession, validateSession } from "@/lib/session";
+import { decrypt, getSession, isValidSession } from "@/lib/session";
 
 export async function loadUserDetails()
   : Promise<{ email: string, role: string } | { message: string }> {
   const session = await getSession();
-  const sessionData = await decrypt(session?.value);
+  const sessionData = await decrypt(session);
   
   if (!sessionData?.userId) {
     return {
@@ -32,7 +32,7 @@ export async function loadUserDetails()
 }
 
 export async function getAccountByEmail(email: string) {
-  if (!validateSession()) return {
+  if (!isValidSession()) return {
     message: "Please login to an authorized account to perform this action",
   };
 

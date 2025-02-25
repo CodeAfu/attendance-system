@@ -33,7 +33,6 @@ export default function QRCanvas() {
           body: JSON.stringify({
             course: courseId,
             venue: data.venue,
-            url: data.url,
           }),
         });
 
@@ -64,12 +63,6 @@ export default function QRCanvas() {
         }
       } catch (error) {
         console.error(error);
-        // setData({
-        // course: "",
-        // venue: "",
-        // qrCode: null,
-        // url: "#",
-        // });
         setStatus("error");
       } finally {
         setGenerateTrigger(false);
@@ -80,7 +73,7 @@ export default function QRCanvas() {
   }, [data, generateTrigger, setData, setGenerateTrigger]);
 
   return (
-    <>
+    <div className="flex-1 flex items-center justify-center">
       {status === "loading" && <Loading variant="spinner" size="lg" />}
       {status === "success" && data.qrCode && (
         <Image
@@ -107,6 +100,6 @@ export default function QRCanvas() {
           <span className="">Waiting to generate QR Code.</span>
         </div>
       )}
-    </>
+    </div>
   );
 }

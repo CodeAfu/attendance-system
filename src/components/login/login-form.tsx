@@ -36,12 +36,6 @@ export function LoginForm({ inputFields, header }: FormProps) {
   }));
 
   const [state, loginAction, isPending] = useActionState(login, undefined);
-  // const pathname = usePathname();
-  // const [redirectTo, setRedirectTo] = useState(pathname);
-
-  // useEffect(() => {
-  //   setRedirectTo(pathname);
-  // }, [pathname]);
 
   return (
     <Card className="w-full max-w-md p-3 shadow-sm rounded-lg">
@@ -53,7 +47,6 @@ export function LoginForm({ inputFields, header }: FormProps) {
       )}
       <CardContent>
         <form action={loginAction} className="flex flex-col gap-6">
-          {/* <input type="hidden" name="redirectTo" value={redirectTo} /> */}
           <div className="space-y-6">
             {normalizedFields.map((field) => (
               <div key={field.name} className="space-y-2">
@@ -105,7 +98,7 @@ export function LoginForm({ inputFields, header }: FormProps) {
 
             <div className="flex flex-col items-center gap-2 text-sm underline">
               <Link href="/account/register" className="text-center">
-                Create a new account (Add this to admin panel)
+                Create a new account
               </Link>
             </div>
           </div>

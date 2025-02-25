@@ -2,10 +2,6 @@ import { APIResponse } from '@/lib/types';
 import { NextResponse } from 'next/server';
 import QRCode from 'qrcode';
 
-export async function GET() {
-  return NextResponse.json({ test: "test" }, { status: 200 });
-}
-
 export async function POST(request: Request) {
   const { course, venue } = await request.json();
   
@@ -27,8 +23,6 @@ export async function POST(request: Request) {
   const formUrl = new URL(formPath, `${protocol}://${host}`);
   formUrl.searchParams.set("course", course);
   formUrl.searchParams.set("venue", venue);
-
-  // const url = formUrl.toString().toLowerCase();
 
   try {
     const qrCode = await QRCode.toDataURL(formUrl.toString(), {

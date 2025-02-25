@@ -26,7 +26,7 @@ export async function login(
   }
   const { email, password } = result.data;
   const redirectTo = formEntries.redirectTo || "/admin";
-
+  
   // DB validation
   try {
     const user = await prisma.systemUser.findFirst({ 
@@ -35,6 +35,7 @@ export async function login(
       }, 
       select: {
         id: true,
+        role: true,
         email: true,
         hashedPassword: true
       }
@@ -51,7 +52,7 @@ export async function login(
         },
       }
     }
-
+    
     const isValidPassword = await checkPassword(password, user.hashedPassword);
     if (!isValidPassword) {
       return {
@@ -64,8 +65,8 @@ export async function login(
         },
       }
     }
-
-    await createSession(user.id);
+    
+    await createSession(user.id, user.role);
   } catch (error) {
     console.error(error);
   }

@@ -44,8 +44,9 @@ export default function QRMenus() {
   };
 
   return (
-    <div>
+    <div className="border bg-white shadow-sm p-3">
       {/* TODO: Convert to flex with a fixed size for span */}
+
       <div className="md:grid md:grid-cols-4 md:items-center flex flex-col gap-2 max-w-[400px] ">
         <span className="col-span-1 text-md px-2">Course:</span>
         <div className="col-span-3">

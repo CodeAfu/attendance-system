@@ -1,8 +1,8 @@
 import React, { ForwardRefExoticComponent } from "react";
 import Link from "next/link";
-import { LucideProps } from "lucide-react";
+import { LucideProps, User } from "lucide-react";
 
-interface HomepageCardProps {
+interface HomeButtonProps {
   title: string;
   description: string;
   href: string;
@@ -10,13 +10,14 @@ interface HomepageCardProps {
   iconColor?: string;
 }
 
-export default function HomepageCard({
+export default function HomeButton({
   title,
   description,
   href,
   icon: Icon,
   iconColor,
-}: HomepageCardProps) {
+}: HomeButtonProps) {
+  Icon = Icon || User;
   return (
     <div className="relative min-w-screen border border-purple-700 bg-white rounded-xl transition-all duration-200 hover:shadow-md hover:border-purple-900 before:absolute before:inset-0 before:bg-gradient-to-r before:from-purple-50 before:to-purple-100 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-200 before:pointer-events-none before:rounded-xl overflow-hidden">
       <Link href={href} className="block px-8 py-4 h-32 relative z-10">
